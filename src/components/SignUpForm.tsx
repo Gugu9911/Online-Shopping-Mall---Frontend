@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import { AuthFormProps } from '../misc/types';
 
-const LoginForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
+const SignupForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onSubmit({ email, password });
+    onSubmit({ email, password, name });
   };
 
   return (
     <div>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+      <h2>Signup</h2>
+      <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
       <div>
         <label htmlFor="email">Email:</label>
         <input
@@ -32,10 +42,10 @@ const LoginForm: React.FC<AuthFormProps> = ({ onSubmit }) => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit">Signup</button>
     </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignupForm;

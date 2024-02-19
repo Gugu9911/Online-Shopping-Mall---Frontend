@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux'; // 引入Provider组件
 import { store } from './redux/store'; // 引入您创建的store
 import Home from './pages/Home';
-import Navbar from './components/navbar';
+import Navbar from './components/Navbar';
 
 const App = () => {
   return (
