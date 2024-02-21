@@ -17,3 +17,9 @@ export type AuthFormProps = {
     }) => void;
   };
   
+  export type SignupUser = {
+    name: string;
+    email: string;
+    password: string;
+    avatar : string;
+  };

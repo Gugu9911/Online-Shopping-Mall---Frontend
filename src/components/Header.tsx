@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
-import { logout } from '../redux/features/userSlice';
+import { logout } from '../redux/slices/userSlice';
 
-const Navbar = () => {
+const Header = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const username = useSelector((state: RootState) => state.user.username); // 获取用户名
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -17,20 +18,21 @@ const Navbar = () => {
       <h1>GroceryHub</h1>
       <div className="nav-links">
         <Link to="/">Home</Link>
-        <Link to="/cart">Shopping Cart</Link>
-        <Link to="/post">Post an Item</Link>
         {isLoggedIn ? (
           <>
+            <span>{username}</span> {/* 显示用户名 */}
             <Link to="/cart">Shopping Cart</Link>
             <Link to="/checkout">Purchase</Link>
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
-          <Link to="/login">Login</Link>
+          <>
+            <Link to="/login">Login</Link>
+          </>
         )}
       </div>
     </nav>
   );
 };
 
-export default Navbar;
+export default Header;
