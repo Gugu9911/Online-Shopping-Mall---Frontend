@@ -8,14 +8,6 @@ export type User = {
   };
   
 
-  // types.tsx
-export type AuthFormProps = {
-    onSubmit: (data: { 
-        email: string; 
-        password: string; 
-        name?: string 
-    }) => void;
-  };
   
   export type SignupUser = {
     name: string;
@@ -23,3 +15,4 @@ export type AuthFormProps = {
     password: string;
     avatar : string;
   };
+

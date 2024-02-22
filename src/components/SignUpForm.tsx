@@ -14,8 +14,23 @@ const SignupForm = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // 阻止表单默认提交行为
+
+      // 密码长度验证
+  if (password.length < 5) {
+    alert('密码长度必须大于等于5位');
+    return;
+  }
+
+  // 邮箱格式验证
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert('请输入有效的邮箱地址');
+    return;
+  }
+
+    const avatarUrl = avatar || "https://api.lorem.space/image/face?w=640&h=480&r=867";
   
-    const userData = { name, email, password, avatar }; 
+    const userData = { name, email, password, avatar: avatarUrl };
   
     try {
       // 使用dispatch触发createUser action，并等待完成
@@ -23,6 +38,7 @@ const SignupForm = () => {
       // Check if the operation was successful
       if (createUser.fulfilled.match(actionResult)) {
         console.log('Registration successful', actionResult.payload);
+        alert('Registration successful!');
         // If the operation was successful, you can handle it here
         setShowSuccessModal(true);
         // Close the modal and navigate to the home page after 3 seconds
@@ -48,7 +64,7 @@ const SignupForm = () => {
       <div>
           <label htmlFor="avatar">Avatar:</label>
           <input
-            type="text"
+            type="file"
             id="avatar"
             value={avatar}
             onChange={(e) => setAvatar(e.target.value)}
@@ -83,7 +99,7 @@ const SignupForm = () => {
         </div>
         <button type="submit">Signup</button>
       </form>
-      {showSuccessModal && <div>注册成功！即将返回主页...</div>}
+      {showSuccessModal && <div>注册成功！即将返回主页面...</div>}
     </div>
   );
 };
