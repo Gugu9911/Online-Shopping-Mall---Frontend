@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import LoginForm from "../components/LoginForm";
-import SignupForm from "../components/SignUpForm";
+import LoginForm from "../components/user/LoginForm";
+import SignupForm from "../components/user/SignUpForm";
 
 
 

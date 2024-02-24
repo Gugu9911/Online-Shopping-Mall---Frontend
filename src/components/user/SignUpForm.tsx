@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createUser } from '../redux/slices/userSlice'; 
-import { useAppDispatch } from '../redux/hooks';
+import { createUser } from '../../redux/slices/userSlice'; 
+import { useAppDispatch } from '../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
@@ -44,7 +44,7 @@ const SignupForm = () => {
         // Close the modal and navigate to the home page after 3 seconds
         setTimeout(() => {
           setShowSuccessModal(false);
-          navigate('/'); 
+          navigate('/loginForm'); 
         }, 3000); // 3 seconds
       } else {
         // If the operation was not successful, you can handle it here
@@ -99,7 +99,7 @@ const SignupForm = () => {
         </div>
         <button type="submit">Signup</button>
       </form>
-      {showSuccessModal && <div>注册成功！即将返回主页面...</div>}
+      {showSuccessModal && <div> Registration success! About to return to the Home page... </div>}
     </div>
   );
 };

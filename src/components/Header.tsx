@@ -8,7 +8,7 @@ import { logout } from '../redux/slices/userSlice';
 
 const Header = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
-  const username = useSelector((state: RootState) => state.user.username); // 获取用户名
+  const username = useSelector((state: RootState) => state.user.username); // get username
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -22,7 +22,7 @@ const Header = () => {
         <Link to="/">Home</Link>
         {isLoggedIn ? (
           <>
-            <span>{username}</span> {/* 显示用户名 */}
+            <span>{username}</span> {/* show username */}
             <Link to="/cart">Shopping Cart</Link>
             <Link to="/checkout">Purchase</Link>
             <button onClick={handleLogout}>Logout</button>

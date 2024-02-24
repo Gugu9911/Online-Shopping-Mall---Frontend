@@ -6,13 +6,11 @@ import Home from './pages/Home';
 import Header from './components/Header';
 import Login from "./pages/Login";
 import Footer from "./components/Footer";
+import LoginForm from './components/user/LoginForm';
+import SingleProduct from './pages/SingleProduct';
 
 
 const App = () => {
-
-  const handleLoginSubmit = (values: any) => {
-    console.log(values);
-  };
 
   return (
     <Provider store={store}> {/* 使用Provider包裹应用，并传递store */}
@@ -23,6 +21,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/header" element={<Header />} />
             <Route path="/login" element={<Login/>} />
+            <Route path="/loginForm" element={<LoginForm/>} />
+            <Route path='/products/:id' element={<SingleProduct />} />
           </Routes>
           <Footer />
         </div>
