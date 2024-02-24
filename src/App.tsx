@@ -8,6 +8,8 @@ import Login from "./pages/Login";
 import Footer from "./components/Footer";
 import LoginForm from './components/user/LoginForm';
 import SingleProduct from './pages/SingleProduct';
+import Category from './pages/Category';
+
 
 
 const App = () => {
@@ -23,6 +25,7 @@ const App = () => {
             <Route path="/login" element={<Login/>} />
             <Route path="/loginForm" element={<LoginForm/>} />
             <Route path='/products/:id' element={<SingleProduct />} />
+            <Route path='/categories' element={<Category />} />
           </Routes>
           <Footer />
         </div>

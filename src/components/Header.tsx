@@ -20,6 +20,7 @@ const Header = () => {
       <h1>GroceryHub</h1>
       <div className="nav-links">
         <Link to="/">Home</Link>
+        <Link to="/categories">Categories</Link>
         {isLoggedIn ? (
           <>
             <span>{username}</span> {/* show username */}

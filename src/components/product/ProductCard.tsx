@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link component
 import { Product } from '../../types/Product'; // Adjust the path as necessary
 
