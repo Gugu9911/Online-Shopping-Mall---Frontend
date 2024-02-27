@@ -8,13 +8,14 @@ const LoginForm = ({}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
-  const navigate = useNavigate(); // Add this line to import the navigate function
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       await dispatch(loginUser({ email, password }));
       navigate('/'); // Use the navigate function to redirect to '/home' after successful login
+      console.log('Login successful');
     } catch (error) {
       console.error('Login failed:', error);
     }

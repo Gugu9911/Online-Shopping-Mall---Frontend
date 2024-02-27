@@ -18,3 +18,12 @@ export type ProductState = {
     loading: boolean;
     error: string | null;
   };
+
+//Define type for new product
+export type NewProduct = {
+  title: string;
+  price: number;
+  description: string;
+  categoryId: number;
+  images: string[];
+};

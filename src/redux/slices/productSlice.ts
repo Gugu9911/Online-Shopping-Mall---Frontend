@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Product, ProductState } from '../../types/Product'; // Adjust the path as necessary
-import { Category, CategoryState } from '../../types/Category';
-import axios, { AxiosResponse } from 'axios';
+import { Product, ProductState, NewProduct } from '../../types/Product'; // Adjust the path as necessary
+import axios from 'axios';
 
 
 // Define the initial state using that type
@@ -10,7 +9,6 @@ const initialState: ProductState = {
   loading: false,
   error: null,
 };
-
 
 
 //Fetch data
@@ -71,8 +69,27 @@ export const fetchProductsByCategoryId = createAsyncThunk<Product[], number, { r
   }
 );
 
-
-
+// Create a new product
+export const addProduct = createAsyncThunk<Product, NewProduct, { rejectValue: string }>(
+  'products/addProduct',
+  async (newProduct, { rejectWithValue }) => {
+    try {
+      const response = await axios.post<Product>(URL, newProduct, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      let message = 'An unknown error occurred'; // 默认错误消息
+      if (axios.isAxiosError(error) && error.response) {
+        message = error.response.data.message || error.message;
+      }
+      alert(message);
+      return rejectWithValue(message);
+    }
+  }
+);
 
 // Create a slice
 const productSlice = createSlice({
@@ -125,6 +142,20 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'An error occurred';
       });
+
+      // Add the addProduct cases
+    builder
+    .addCase(addProduct.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(addProduct.fulfilled, (state, action) => {
+      state.loading = false;
+      state.products.push(action.payload);
+    })
+    .addCase(addProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || 'An error occurred';
+    });
   },
 });
 

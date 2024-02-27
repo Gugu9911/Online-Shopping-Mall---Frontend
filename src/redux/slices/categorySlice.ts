@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios from "axios";
 
 import { Category, CategoryState } from "../../types/Category";
 
@@ -28,6 +28,8 @@ export const fetchAllCategories = createAsyncThunk<Category[], undefined, { reje
     }
   }
 );
+
+
 
 
 // Create a slice

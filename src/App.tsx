@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import LoginForm from './components/user/LoginForm';
 import SingleProduct from './pages/SingleProduct';
 import Category from './pages/Category';
+import AddProduct from './components/product/AddProduct';
 
 
 
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/loginForm" element={<LoginForm/>} />
             <Route path='/products/:id' element={<SingleProduct />} />
             <Route path='/categories' element={<Category />} />
+            <Route path='/addProduct' element={<AddProduct />} />
           </Routes>
           <Footer />
         </div>
