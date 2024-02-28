@@ -1,50 +1,12 @@
 // Import createAsyncThunk
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { SignupUser, User } from '../../types/User'; // Adjust the path as necessary
+import { SignupUser, User, UserInitialState } from '../../types/User'; // Adjust the path as necessary
 import axios, { AxiosResponse } from 'axios';
 
 
 const URL = "https://api.escuelajs.co/api/v1/users";
-const LOGIN_URL = "https://api.escuelajs.co/api/v1/auth/login"; 
+const LOGIN_URL = "https://api.escuelajs.co/api/v1/auth/login";
 const profileUrl = "https://api.escuelajs.co/api/v1/auth/profile";
-
-// // Define thunk for fetching all users
-// export const getAllUsers = createAsyncThunk(
-//   "user/getAllUsers",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.get(URL, {
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       });
-//       console.log('Fetched all users:', response.data); // Optional: Log the fetched data
-//       return response.data;
-//     } catch (error: any) {
-//       console.error('Error fetching all users:', error.message); // Log the error
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
-
-// // Define thunk for fetching single user by ID
-// export const fetchUserById = createAsyncThunk(
-//   "user/fetchUserById",
-//   async (id: number, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.get(`${URL}/${id}`, {
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       });
-//       console.log(`Fetched user by ID ${id}:`, response.data); // Optional: Log the fetched data
-//       return response.data;
-//     } catch (error: any) {
-//       console.error(`Error fetching user by ID ${id}:`, error.message); // Log the error
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
 
 
 // Create a new user
@@ -119,28 +81,70 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+//logout thunk
+export const logoutUser = createAsyncThunk(
+  "user/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      localStorage.removeItem("token");
+      console.log('User logged out successfully');
+      return true;
+    } catch (error: any) {
+      console.error('Error logging out user:', error.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
+// Define thunk for fetching all users
+export const getAllUsers = createAsyncThunk(
+  "user/getAllUsers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(URL, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching all users:', error.message); // Log the error
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Define thunk for fetching single user by ID
+export const fetchUserById = createAsyncThunk(
+  "user/fetchUserById",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${URL}/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      // Optionally log the fetched data for development purposes
+      console.log(`Fetched user by ID ${id}:`, response.data);
+      return response.data; // Directly return the user data
+    } catch (error: any) {
+      console.error(`Error fetching user by ID ${id}:`, error.response?.data?.message || error.message);
+      // Reject with the error message. Prefer using the error response from the server if available.
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
 
 
 
-
-
-
-// Define the initial state using that type
-interface UserState {
-  isLoggedIn: boolean;
-  username?: string;
-  userCreationStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
-  userLoginStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error?: string;
-}
-
-const initialState: UserState = {
-  isLoggedIn: false,
-  username: undefined,
-  userCreationStatus: 'idle',
-  userLoginStatus: 'idle',
-  error: undefined,
+const initialState: UserInitialState = {
+  user: null,
+  users: [],
+  loading: false,
+  error: null,
 };
+
 
 
 // Define the slice using the initial state and the reducers
@@ -148,78 +152,73 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<{ username: string }>) => {
-      state.isLoggedIn = true;
-      state.username = action.payload.username;
-    },
-    logout: (state) => {
-      state.isLoggedIn = false;
-      state.username = undefined;
-    },
+    // Define any synchronous reducers if necessary
   },
   extraReducers: (builder) => {
-    // // Handling getAllUsers
-    // builder
-    //   .addCase(getAllUsers.pending, (state) => {
-    //     state.userCreationStatus = 'loading';
-    //   })
-    //   .addCase(getAllUsers.fulfilled, (state, action) => {
-    //     state.userCreationStatus = 'succeeded';
-    //     // Optional: Update state based on action.payload if needed
-    //   })
-    //   .addCase(getAllUsers.rejected, (state, action) => {
-    //     state.userCreationStatus = 'failed';
-    //     state.error = action.error.message;
-    //   });
-
-    // // Handling fetchUserById
-    // builder
-    //   .addCase(fetchUserById.pending, (state) => {
-    //     state.userCreationStatus = 'loading';
-    //   })
-    //   .addCase(fetchUserById.fulfilled, (state, action) => {
-    //     state.userCreationStatus = 'succeeded';
-    //     // Optional: Update state based on action.payload if needed
-    //   })
-    //   .addCase(fetchUserById.rejected, (state, action) => {
-    //     state.userCreationStatus = 'failed';
-    //     state.error = action.error.message;
-    //   });
-
     // Handling createUser
     builder
       .addCase(createUser.pending, (state) => {
-        state.userCreationStatus = 'loading';
+        state.loading = true;
       })
       .addCase(createUser.fulfilled, (state, action) => {
-        state.userCreationStatus = 'succeeded';
-        // Optional: Update state based on action.payload if needed
+        state.loading = false;
+        state.users.push(action.payload); // Assuming action.payload contains the new user
       })
       .addCase(createUser.rejected, (state, action) => {
-        state.userCreationStatus = 'failed';
-        state.error = action.error.message;
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
       });
 
-    // Handling LoginUser
+    // Handling loginUser
     builder
       .addCase(loginUser.pending, (state) => {
-        state.userLoginStatus = 'loading';
+        state.loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.userLoginStatus = 'succeeded';
-        state.isLoggedIn = true;
-        state.username = action.payload.name; // Ensure your payload structure matches
+        state.loading = false;
+        state.user = action.payload; // Assuming action.payload contains the user's data
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.userLoginStatus = 'failed';
-        state.error = action.error.message;
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
       });
 
-    // Add additional async actions as needed following the pattern above
+    // Handling logoutUser
+    builder
+      .addCase(logoutUser.fulfilled, (state,action) => {
+        state.user = null; // Reset user to null upon logout
+      });
+
+    // Handling getAllUsers
+    builder
+      .addCase(getAllUsers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload; // Assuming action.payload contains an array of users
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
+      });
+
+    // Handling fetchUserById
+    builder
+      .addCase(fetchUserById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUserById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload; 
+      })
+      .addCase(fetchUserById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
+      });
   },
 });
 
-export const { login, logout } = userSlice.actions;
-
 export default userSlice.reducer;
+
 

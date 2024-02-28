@@ -9,7 +9,6 @@ import { fetchAllCategories } from '../../redux/slices/categorySlice';
 import { CategoryState } from '../../types/Category';
 import { useNavigate } from 'react-router-dom';
 
-
 const AddProduct = () => {
   const dispatch = useAppDispatch();
   const categories = useSelector((state: { categories: CategoryState }) => state.categories);
@@ -27,6 +26,7 @@ const AddProduct = () => {
     dispatch(fetchAllCategories());
   }, [dispatch]);
   
+
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

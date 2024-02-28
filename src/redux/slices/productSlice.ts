@@ -91,6 +91,9 @@ export const addProduct = createAsyncThunk<Product, NewProduct, { rejectValue: s
   }
 );
 
+
+
+
 // Create a slice
 const productSlice = createSlice({
   name: 'products',

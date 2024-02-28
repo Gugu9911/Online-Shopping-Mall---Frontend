@@ -15,3 +15,9 @@ export type User = {
     avatar : string;
   };
 
+  export type UserInitialState = {
+    user: User | null;
+    users: User[];
+    loading: boolean;
+    error: string | null;
+  };

@@ -1,18 +1,37 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { logout } from '../redux/slices/userSlice';
-
-
+import { logoutUser, getAllUsers } from '../redux/slices/userSlice';
+import { useAppDispatch } from '../redux/hooks';
+import { Link } from 'react-router-dom';
+import { User } from '../types/User';
 
 const Header = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
-  const username = useSelector((state: RootState) => state.user.username); // get username
-  const dispatch = useDispatch();
+  // Directly derive isLoggedIn from whether user object is null or not
+  const user = useSelector((state: RootState) => state.user.user);
+  const isLoggedIn = Boolean(user); // true if user is not null
+  const username = user?.name; // Adjust the attribute name as per your user object's structure
+
+  const [userId, setUserId] = useState(null);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(getAllUsers())
+        .unwrap()
+        .then(users => {
+          const user = users.find((user: User) => user.name === username);
+          if (user) {
+            setUserId(user.id); // Update state to store the current user's ID
+          }
+        })
+        .catch(error => console.error('Error fetching users:', error));
+    }
+  }, [dispatch, isLoggedIn, username]);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
+    alert('User logged out successfully');
   };
 
   return (
@@ -24,7 +43,8 @@ const Header = () => {
         <Link to="/addProduct">Add Product</Link>
         {isLoggedIn ? (
           <>
-            <span>{username}</span> {/* show username */}
+            <span>{username}</span> {/* Show username */}
+            <Link to={`/profile/${userId}`}>Profile</Link>
             <Link to="/cart">Shopping Cart</Link>
             <Link to="/checkout">Purchase</Link>
             <button onClick={handleLogout}>Logout</button>
