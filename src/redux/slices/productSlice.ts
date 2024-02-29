@@ -109,6 +109,22 @@ export const deleteProduct = createAsyncThunk<Product, number, { rejectValue: st
   }
 );
 
+// Filter products by title
+export const filterProductsByTitle = createAsyncThunk<any, string, { rejectValue: string }>(
+  'products/filterProductsByTitle',
+  async (title, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${URL}/?title=${encodeURIComponent(title)}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data.message || error.message;
+        return rejectWithValue(message);
+      }
+      return rejectWithValue('An unknown error occurred');
+    }
+  }
+);
 
 
 // Create a slice
@@ -188,6 +204,19 @@ const productSlice = createSlice({
       state.products = state.products.filter((product) => product.id !== action.payload.id);
     })
     .addCase(deleteProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || 'An error occurred';
+    });
+    // Add the filterProductsByTitle cases
+    builder
+    .addCase(filterProductsByTitle.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(filterProductsByTitle.fulfilled, (state, action) => {
+      state.loading = false;
+      state.products = action.payload;
+    })
+    .addCase(filterProductsByTitle.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload || 'An error occurred';
     });

@@ -4,9 +4,10 @@ import { useAppDispatch } from '../../redux/hooks';
 import { fetchAllCategories } from '../../redux/slices/categorySlice'; // Adjust import paths as necessary
 import { fetchProductsByCategoryId, fetchAllProducts } from '../../redux/slices/productSlice'; // Import your async thunk
 import ProductCards from './ProductCard'; // Ensure correct import
-import { Category, CategoryState } from '../../types/Category'; // Adjust import paths
-import { Product, ProductState } from '../../types/Product'; // Adjust import paths
+import { CategoryState } from '../../types/Category'; // Adjust import paths
+import { ProductState } from '../../types/Product'; // Adjust import paths
 import { sortProductsByPrice } from '../../utils/sortProducts';
+
 
 const Categories = () => {
   const dispatch = useAppDispatch();
