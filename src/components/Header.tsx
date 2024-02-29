@@ -46,7 +46,6 @@ const Header = () => {
             <span>{username}</span> {/* Show username */}
             <Link to={`/profile/${userId}`}>Profile</Link>
             <Link to="/cart">Shopping Cart</Link>
-            <Link to="/checkout">Purchase</Link>
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (

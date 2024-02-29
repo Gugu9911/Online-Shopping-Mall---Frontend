@@ -6,6 +6,7 @@ import axios from 'axios';
 // Define the initial state using that type
 const initialState: ProductState = {
   products: [],
+  singleProduct: null,
   loading: false,
   error: null,
 };
@@ -125,6 +126,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
         state.loading = false;
+        state.singleProduct = action.payload;
         state.error = null;
       })
       .addCase(fetchProductById.rejected, (state, action) => {
