@@ -92,6 +92,22 @@ export const addProduct = createAsyncThunk<Product, NewProduct, { rejectValue: s
   }
 );
 
+//delete product
+export const deleteProduct = createAsyncThunk<Product, number, { rejectValue: string }>(
+  'products/deleteProduct',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`${URL}/${id}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data.message || error.message;
+        return rejectWithValue(message);
+      }
+      return rejectWithValue('An unknown error occurred');
+    }
+  }
+);
 
 
 
@@ -158,6 +174,20 @@ const productSlice = createSlice({
       state.products.push(action.payload);
     })
     .addCase(addProduct.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || 'An error occurred';
+    });
+
+    // Add the deleteProduct cases
+    builder
+    .addCase(deleteProduct.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(deleteProduct.fulfilled, (state, action) => {
+      state.loading = false;
+      state.products = state.products.filter((product) => product.id !== action.payload.id);
+    })
+    .addCase(deleteProduct.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload || 'An error occurred';
     });

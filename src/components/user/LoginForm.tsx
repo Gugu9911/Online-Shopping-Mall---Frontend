@@ -14,8 +14,12 @@ const LoginForm = ({}) => {
     event.preventDefault();
     try {
       await dispatch(loginUser({ email, password }));
-      navigate('/'); // Use the navigate function to redirect to '/home' after successful login
-      console.log('Login successful');
+      if (localStorage.getItem('token')) {
+        navigate('/'); // navigate function to redirect to '/home' after successful login
+        console.log('Login successful');
+      }else{
+        alert('Please check your email and password');
+      }
     } catch (error) {
       console.error('Login failed:', error);
     }

@@ -75,8 +75,8 @@ export const loginUser = createAsyncThunk(
       // Back to the user's profile
       return authentication.payload as User;
     } catch (error: any) {
-      console.error('Error logging in user:', error.response?.data?.message || error.message); // 记录错误信息
-      return rejectWithValue(error.response?.data?.message || error.message);
+      console.error('Error logging in user:', error.response?.data?.message || error.message); // Log the error
+      return rejectWithValue(error.response?.data?.message || error.message); 
     }
   }
 );
