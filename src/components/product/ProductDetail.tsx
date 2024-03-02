@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchProductById } from '../../redux/slices/productSlice';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch,useAppSelector } from '../../redux/hooks';
 import { deleteProduct } from '../../redux/slices/productSlice';
 import { useNavigate } from 'react-router-dom';
+import AddToCart from '../cart/AddToCart';
 
 const ProductDetail: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -12,14 +12,14 @@ const ProductDetail: React.FC = () => {
     const navigate = useNavigate(); 
 
     // Fetching the product details as you already are
-    const { product, loading, error } = useSelector((state: any) => ({
+    const { product, loading, error } = useAppSelector((state: any) => ({
         product: state.products.products.find((product: any) => product.id === parseInt(id ?? '')),
         loading: state.products.loading,
         error: state.products.error,
     }));
 
     // Fetching the current user's role
-    const userRole = useSelector((state: any) => state.user.user?.role);
+    const userRole = useAppSelector((state: any) => state.user.user?.role);
 
     useEffect(() => {
         if (id) {
@@ -49,6 +49,7 @@ const ProductDetail: React.FC = () => {
                     <p>{product.description}</p>
                     <p>Price: ${product.price}</p>
                     <img src={product.images[0]} alt={product.title} style={{ width: '100px', height: '100px' }} />
+                    <AddToCart product={product} />
                     {/* Conditionally render modify/delete buttons for admin users */}
                     {userRole === 'admin' && (
                         <div>

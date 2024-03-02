@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch,useAppSelector } from '../../redux/hooks';
 import { fetchAllCategories } from '../../redux/slices/categorySlice'; // Adjust import paths as necessary
 import { fetchProductsByCategoryId, fetchAllProducts } from '../../redux/slices/productSlice'; // Import your async thunk
 import ProductCards from './ProductCard'; // Ensure correct import
@@ -11,8 +10,8 @@ import { sortProductsByPrice } from '../../utils/sortProducts';
 
 const Categories = () => {
   const dispatch = useAppDispatch();
-  const { categories, loading: categoriesLoading, error: categoriesError } = useSelector((state: { categories: CategoryState }) => state.categories);
-  const { products, loading: productsLoading, error: productsError } = useSelector((state: { products: ProductState }) => state.products);
+  const { categories, loading: categoriesLoading, error: categoriesError } = useAppSelector((state: { categories: CategoryState }) => state.categories);
+  const { products, loading: productsLoading, error: productsError } = useAppSelector((state: { products: ProductState }) => state.products);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [showDropdown, setShowDropdown] = useState(false); // Control the display of the dropdown menu
   const [sortOrder, setSortOrder] = useState<string>(''); // Sorting order

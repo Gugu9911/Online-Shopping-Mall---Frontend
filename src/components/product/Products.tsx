@@ -1,5 +1,5 @@
 // Products.tsx
-import React, { useEffect,useState } from 'react';
+import { useEffect,useState } from 'react';
 import { useSelector } from 'react-redux';
 import { fetchAllProducts, filterProductsByTitle } from '../../redux/slices/productSlice'; // Adjust the path as necessary
 import ProductCards from './ProductCard'; // Adjust the path as necessary

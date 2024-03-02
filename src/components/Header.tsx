@@ -34,16 +34,21 @@ const Header = () => {
     alert('User logged out successfully');
   };
 
+  // Fetching the current user's role
+  const userRole = useSelector((state: any) => state.user.user?.role);
+
   return (
     <nav className="navbar">
       <h1>GroceryHub</h1>
       <div className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/categories">Categories</Link>
-        <Link to="/addProduct">Add Product</Link>
         {isLoggedIn ? (
           <>
             <span>{username}</span> {/* Show username */}
+            {userRole === 'admin' && (
+                <Link to="/addProduct">Add Product</Link>
+            )}
             <Link to={`/profile/${userId}`}>Profile</Link>
             <Link to="/cart">Shopping Cart</Link>
             <button onClick={handleLogout}>Logout</button>

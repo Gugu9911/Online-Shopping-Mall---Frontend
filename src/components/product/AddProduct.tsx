@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { addProduct } from '../../redux/slices/productSlice'; 
 import { uploadFile } from '../../redux/slices/fileSlice'; 
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch } from '../../redux/hooks';
-import { useSelector } from 'react-redux';
+import { useAppDispatch,useAppSelector } from '../../redux/hooks';
 import { NewProduct } from '../../types/Product'; 
 import { fetchAllCategories } from '../../redux/slices/categorySlice';
 import { CategoryState } from '../../types/Category';
@@ -11,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
   const dispatch = useAppDispatch();
-  const categories = useSelector((state: { categories: CategoryState }) => state.categories);
+  const categories = useAppSelector((state: { categories: CategoryState }) => state.categories);
   const navigate = useNavigate(); 
 
   const [newProduct, setNewProduct] = useState<NewProduct>({
