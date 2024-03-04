@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Product, ProductState, NewProduct } from '../../types/Product'; // Adjust the path as necessary
+import { createSlice, PayloadAction, createAsyncThunk, Update } from '@reduxjs/toolkit';
+import { Product, ProductState, NewProduct, UpdatedProduct } from '../../types/Product'; // Adjust the path as necessary
 import axios from 'axios';
 
 
@@ -42,6 +42,7 @@ export const fetchProductById = createAsyncThunk<Product, number, { rejectValue:
   async (id: number, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${URL}/${id}`);
+      console.log('response', response.data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -126,6 +127,25 @@ export const filterProductsByTitle = createAsyncThunk<any, string, { rejectValue
   }
 );
 
+//modify product
+export const updateProduct = createAsyncThunk<any, { id: number; updatedData: UpdatedProduct }, { rejectValue: string }>(
+  'product/updateProduct',
+  async ({ id, updatedData }, { rejectWithValue }) => {
+    try {
+      console.log('updatedData', updatedData);
+      const response = await axios.put(`${URL}/${id}`, updatedData);
+      console.log(' response', response.data);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data.message || error.message;
+        return rejectWithValue(message);
+      }
+      return rejectWithValue('An unexpected error occurred updating the product');
+    }
+  }
+);
+
 
 // Create a slice
 const productSlice = createSlice({
@@ -180,45 +200,60 @@ const productSlice = createSlice({
         state.error = action.payload || 'An error occurred';
       });
 
-      // Add the addProduct cases
+    // Add the addProduct cases
     builder
-    .addCase(addProduct.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(addProduct.fulfilled, (state, action) => {
-      state.loading = false;
-      state.products.push(action.payload);
-    })
-    .addCase(addProduct.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload || 'An error occurred';
-    });
+      .addCase(addProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products.push(action.payload);
+      })
+      .addCase(addProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'An error occurred';
+      });
 
     // Add the deleteProduct cases
     builder
-    .addCase(deleteProduct.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(deleteProduct.fulfilled, (state, action) => {
-      state.loading = false;
-      state.products = state.products.filter((product) => product.id !== action.payload.id);
-    })
-    .addCase(deleteProduct.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload || 'An error occurred';
-    });
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = state.products.filter((product) => product.id !== action.payload.id);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'An error occurred';
+      });
     // Add the filterProductsByTitle cases
     builder
-    .addCase(filterProductsByTitle.pending, (state) => {
+      .addCase(filterProductsByTitle.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(filterProductsByTitle.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
+      .addCase(filterProductsByTitle.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'An error occurred';
+      });
+
+    //update a product
+    builder.addCase(updateProduct.pending, (state) => {
       state.loading = true;
     })
-    .addCase(filterProductsByTitle.fulfilled, (state, action) => {
-      state.loading = false;
-      state.products = action.payload;
+    .addCase(updateProduct.fulfilled, (state, action) => {
+      const index = state.products.findIndex(product => product.id === action.payload.id);
+      if (index !== -1) {
+        state.products[index] = action.payload;
+      }
     })
-    .addCase(filterProductsByTitle.rejected, (state, action) => {
+    .addCase(updateProduct.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload || 'An error occurred';
+      state.error = action.error.message || 'Something went wrong updating the product';
     });
   },
 });

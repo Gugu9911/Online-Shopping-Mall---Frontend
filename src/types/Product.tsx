@@ -28,3 +28,11 @@ export type NewProduct = {
   categoryId: number;
   images: string[];
 };
+
+export type UpdatedProduct = {
+  title?: string;
+  price?: number;
+  description?: string;
+  categoryId?: number;
+  images?: string[];
+};

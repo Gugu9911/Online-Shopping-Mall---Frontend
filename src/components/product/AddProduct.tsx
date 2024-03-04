@@ -43,7 +43,7 @@ const AddProduct = () => {
         const imageUrls = imageResponses.map(response => response.location); // Assuming the response has a location property
         setNewProduct({ ...newProduct, images: imageUrls });
       } catch (error) {
-        alert('Error uploading image(s)'); // 使用 alert 替代 toast.error
+        alert('Error uploading image(s)'); 
       }
     }
   };

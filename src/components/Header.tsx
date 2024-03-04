@@ -45,12 +45,12 @@ const Header = () => {
         <Link to="/categories">Categories</Link>
         {isLoggedIn ? (
           <>
-            <span>{username}</span> {/* Show username */}
             {userRole === 'admin' && (
                 <Link to="/addProduct">Add Product</Link>
             )}
-            <Link to={`/profile/${userId}`}>Profile</Link>
             <Link to="/cart">Shopping Cart</Link>
+            <Link to={`/profile/${userId}`}>Profile</Link>
+            <span>Welcome! {username}</span> {/* Show username */}
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (

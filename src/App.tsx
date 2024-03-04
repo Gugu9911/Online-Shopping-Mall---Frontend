@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux'; 
 import { store } from './redux/store'; 
@@ -12,7 +11,7 @@ import Category from './pages/Category';
 import AddProduct from './components/product/AddProduct';
 import UserProfile from './components/user/UserProfile';
 import Cart from './pages/Cart';
-
+import UpdateProduct from './components/product/UpdateProduct';
 
 const App = () => {
 
@@ -31,6 +30,7 @@ const App = () => {
             <Route path='/addProduct' element={<AddProduct />} />
             <Route path='/profile/:id' element={<UserProfile />} />
             <Route path='/cart' element={<Cart />} />
+            <Route path='/updateproduct/:productId' element={<UpdateProduct />} />
           </Routes>
           <Footer />
         </div>
