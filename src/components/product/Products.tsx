@@ -1,56 +1,58 @@
-// Products.tsx
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { fetchAllProducts, filterProductsByTitle } from '../../redux/slices/productSlice'; // Adjust the path as necessary
-import ProductCards from './ProductCard'; // Adjust the path as necessary
+import { fetchAllProducts, filterProductsByTitle } from '../../redux/slices/productSlice';
+import ProductCards from './ProductCard';
 import { useAppDispatch } from '../../redux/hooks';
 import { sortProductsByPrice } from '../../utils/sortProducts';
 import SearchBox from './SearchBox';
+import { Box, CircularProgress, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+
 
 const Products = () => {
-    
-    const dispatch = useAppDispatch();
-    const { products, loading, error } = useSelector((state: any) => state.products);
-    const [sortOrder, setSortOrder] = useState<string>(''); // Sorting order
-    const [searchQuery, setSearchQuery] = useState<string>(''); // Search query
+  const dispatch = useAppDispatch();
+  const { products, loading, error } = useSelector((state: any) => state.products);
+  const [sortOrder, setSortOrder] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
-    useEffect(() => {
-        dispatch(fetchAllProducts());
-    }, [dispatch]);
 
-    // Filter products based on search query
-    const handleSearch = (query: string) => {
-      dispatch(filterProductsByTitle(query)); // 使用用户的查询派发action
-      setSearchQuery(query); // 更新查询状态
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
+
+  const handleSearch = (query: string) => {
+    dispatch(filterProductsByTitle(query));
+    setSearchQuery(query);
   };
 
-    // Sort products by price when sortOrder changes
-    const sortedProducts = sortProductsByPrice(products, sortOrder);
+  const sortedProducts = sortProductsByPrice(products, sortOrder);
 
-
-  if (loading) return <p>Loading products...</p>;
-  if (error) return <p>Error fetching products: {error}</p>;
+  if (loading) return <CircularProgress />;
+  if (error) return <Typography variant="body1" color="error">Error fetching products: {error}</Typography>;
 
   return (
-    <div>
-      <h2>Products</h2>
+    <Box sx={{ padding: '20px' }}>
+      <Typography variant="h4" gutterBottom>Products</Typography>
       <SearchBox onSearch={handleSearch} />
-      <div>
-        <select onChange={(e) => setSortOrder(e.target.value)}>
-          <option value="">Sort by</option>
-          <option value="priceAsc">Price: Low to High</option>
-          <option value="priceDesc">Price: High to Low</option>
-        </select>
-      </div>
-      {/* 条件渲染：根据产品列表是否为空显示不同的内容 */}
+      <FormControl fullWidth>
+        <InputLabel id="sort-order-label">Sort by</InputLabel>
+        <Select
+          labelId="sort-order-label"
+          value={sortOrder}
+          label="Sort by"
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <MenuItem value="">Sort by</MenuItem>
+          <MenuItem value="priceAsc">Price: Low to High</MenuItem>
+          <MenuItem value="priceDesc">Price: High to Low</MenuItem>
+        </Select>
+      </FormControl>
       {sortedProducts.length > 0 ? (
-        <div>
-          <ProductCards products={sortedProducts} />
-        </div>
-            ) : (
-              <p>无“{searchQuery}”的结果</p> // 当没有搜索结果时显示
-            )}
-    </div>
+        <ProductCards products={sortedProducts} />
+        
+      ) : (
+        <Typography variant="body1">No results for "{searchQuery}"</Typography>
+      )}
+    </Box>
   );
 };
 

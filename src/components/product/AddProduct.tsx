@@ -8,6 +8,7 @@ import { fetchAllCategories } from '../../redux/slices/categorySlice';
 import { CategoryState } from '../../types/Category';
 import { useNavigate } from 'react-router-dom';
 
+
 const AddProduct = () => {
   const dispatch = useAppDispatch();
   const categories = useAppSelector((state: { categories: CategoryState }) => state.categories);

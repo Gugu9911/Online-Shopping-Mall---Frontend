@@ -1,15 +1,33 @@
-
+import React from 'react';
+import { Container, Grid, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const Footer = () => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
+  // 根据你的需求选择颜色，这里我使用primary.main颜色
+  const backgroundColor = theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.background.paper;
+
   return (
-    <footer>
-      <div>
-        <p>GroceryHub © {new Date().getFullYear()}</p>
-        <p>All rights reserved.</p>
-      </div>
-      <div>
-        <p>Contact Us: info@groceryhub.com</p>
-      </div>
+    <footer style={{ backgroundColor, padding: theme.spacing(3, 0), color: theme.palette.text.primary }}>
+      <Container maxWidth="lg">
+        <Grid container spacing={3} justifyContent="space-between" alignItems="center">
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1" align={matches ? 'left' : 'center'}>
+              GroceryHub © {new Date().getFullYear()}
+            </Typography>
+            <Typography variant="body2" align={matches ? 'left' : 'center'}>
+              All rights reserved.
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1" align={matches ? 'right' : 'center'}>
+              Contact Us: info@groceryhub.com
+            </Typography>
+          </Grid>
+        </Grid>
+      </Container>
     </footer>
   );
 };
