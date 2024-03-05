@@ -1,34 +1,53 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { Button, Box, Typography, Container } from '@mui/material';
+
 import LoginForm from "../components/user/LoginForm";
 import SignupForm from "../components/user/SignUpForm";
 
-
-
 const Login = () => {
-    const [showLogin, setShowLogin] = useState(true); // 控制显示登录或注册表单
-
-
-
+    const [showLogin, setShowLogin] = useState(true);
 
     return (
-        <div>
-            {showLogin ? (
-                <>
-                    <LoginForm />
-                    <p>
-                        No account? <button onClick={() => setShowLogin(false)}>Signup here</button>
-                    </p>
-                </>
-            ) : (
-                <>
-                    <SignupForm/>
-                    <p>
-                        Have an account? <button onClick={() => setShowLogin(true)}>Login here</button>
-                    </p>
-                </>
-            )}
-        </div>
+        <Container maxWidth="sm">
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+            >
+                {showLogin ? (
+                    <>
+                        <LoginForm />
+                        <Typography variant="body1" sx={{ mt: 2 }}>
+                            No account? 
+                            <Button 
+                                variant="text"
+                                onClick={() => setShowLogin(false)}
+                                sx={{ ml: 1, textTransform: 'none' }}
+                            >
+                                Signup here
+                            </Button>
+                        </Typography>
+                    </>
+                ) : (
+                    <>
+                        <SignupForm />
+                        <Typography variant="body1" sx={{ mt: 2 }}>
+                            Have an account? 
+                            <Button 
+                                variant="text"
+                                onClick={() => setShowLogin(true)}
+                                sx={{ ml: 1, textTransform: 'none' }}
+                            >
+                                Login here
+                            </Button>
+                        </Typography>
+                    </>
+                )}
+            </Box>
+        </Container>
     );
 };
 

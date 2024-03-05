@@ -1,5 +1,5 @@
-// SearchBox.tsx
 import React, { useState } from 'react';
+import { TextField, Button, Box, Grid } from '@mui/material';
 import { useAppDispatch } from '../../redux/hooks';
 
 interface SearchBoxProps {
@@ -19,15 +19,30 @@ const SearchBox: React.FC<SearchBoxProps> = ({ onSearch }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Search products by name..."
-                value={query}
-                onChange={handleChange}
-            />
-            <button type="submit">Search</button>
-        </form>
+        <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ mt: 1 }}>
+            <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={8} md={9} sx={{ ".MuiOutlinedInput-root": { borderRadius: '50px' } }}>
+                    <TextField
+                        fullWidth
+                        label="Search products by name..."
+                        variant="outlined"
+                        value={query}
+                        onChange={handleChange}
+                        size="small"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={4} md={3}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ height: '100%' }}
+                    >
+                        Search
+                    </Button>
+                </Grid>
+            </Grid>
+        </Box>
     );
 };
 

@@ -3,9 +3,7 @@ import Categories from "../components/product/Categories";
 
 const Category = () => {
     return (
-        <div>
-            <Categories />
-        </div>
+        <Categories />
     )
 }
 

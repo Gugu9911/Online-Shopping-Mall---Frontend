@@ -16,11 +16,11 @@ import AddProduct from './components/product/AddProduct';
 import UserProfile from './components/user/UserProfile';
 import Cart from './pages/Cart';
 import UpdateProduct from './components/product/UpdateProduct';
+import { CssBaseline, Container } from '@mui/material';
 
 const App = () => {
-  const [theme, setTheme] = useState(lightTheme); // 默认使用defaultTheme
+  const [theme, setTheme] = useState(lightTheme); 
 
-  // 切换主题的函数
   const toggleTheme = () => {
     setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme);
   };
@@ -28,9 +28,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Router>
-          <div>
-            <Header toggleTheme={toggleTheme} /> {/* 将toggleTheme传递给Header */}
+          <Container>
+            <Header toggleTheme={toggleTheme} />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/header" element={<Header />} />
@@ -44,7 +45,7 @@ const App = () => {
               <Route path='/updateproduct/:productId' element={<UpdateProduct />} />
             </Routes>
             <Footer />
-          </div>
+          </Container>
         </Router>
       </ThemeProvider>
     </Provider>

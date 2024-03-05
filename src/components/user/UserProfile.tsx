@@ -3,7 +3,9 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fetchUserById } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
-import { User } from '../../types/User'; // 假设你已经有了这个类型定义
+import { User } from '../../types/User'; 
+import { Avatar } from '@mui/material';
+
 
 
 const UserProfile = () => {
@@ -38,7 +40,8 @@ const UserProfile = () => {
       <h2>User Profile</h2>
       <p><strong>Name:</strong> {user.name}</p>
       <p><strong>Email:</strong> {user.email}</p>
-      {/* Add more fields as needed, ensuring they exist within your User type */}
+      <p><strong>Role:</strong> {user.role}</p>
+      <Avatar alt={user.name} src={user.avatar} />
     </div>
   );
 };

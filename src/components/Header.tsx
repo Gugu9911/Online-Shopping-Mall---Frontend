@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <Link component={RouterLink} to="/" color="inherit" underline="none">
-          GroceryHub
+            GroceryHub
           </Link>
         </Typography>
         {isMobile ? (
@@ -103,7 +103,6 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
           <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
             <Link component={RouterLink} to="/" color="inherit" sx={{ m: 1 }}>Home</Link>
             <Link component={RouterLink} to="/categories" color="inherit" sx={{ m: 1 }}>Categories</Link>
-            {toggleTheme && <Button onClick={toggleTheme} color="inherit" sx={{ m: 1 }}>Toggle Theme</Button>}
             {isLoggedIn && (
               <>
                 {userRole === 'admin' && <Link component={RouterLink} to="/addProduct" color="inherit" sx={{ m: 1 }}>Add Product</Link>}
@@ -116,6 +115,7 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
             {!isLoggedIn && (
               <Link component={RouterLink} to="/login" color="inherit" sx={{ m: 1 }}>Login</Link>
             )}
+            {toggleTheme && <Button onClick={toggleTheme} color="inherit" sx={{ m: 1 }}>Toggle Theme</Button>}
           </Box>
         )}
       </Toolbar>

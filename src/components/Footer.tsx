@@ -6,7 +6,6 @@ const Footer = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('sm'));
 
-  // 根据你的需求选择颜色，这里我使用primary.main颜色
   const backgroundColor = theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.background.paper;
 
   return (
