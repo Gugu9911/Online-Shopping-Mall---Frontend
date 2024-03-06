@@ -91,7 +91,7 @@ const UpdateProduct = () => {
       .unwrap()
       .then(() => {
         alert('Product updated successfully');
-        navigate('/');
+        navigate(`/products/${productId}`);
       })
       .catch((error) => {
         alert(`Error: ${error.message}`);

@@ -20,17 +20,17 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange }: Pag
         // Apply custom CSS styles using the sx prop
         sx={{
           '& .MuiPaginationItem-root': {
-            color: '#1976d2', // Change the color of the pagination items
+            color: '#ff9a3c', 
           },
           '& .Mui-selected': {
-            backgroundColor: '#1976d2', // Change the background color of the selected item
-            color: '#fff', // Change the text color of the selected item
+            backgroundColor: '#ff9a3c', 
+            color: '#fff', 
             '&:hover': {
-              backgroundColor: '#115293', // Darken the background color on hover
+              backgroundColor: '#115293', 
             },
           },
           '& .MuiPaginationItem-ellipsis': {
-            color: 'black', // Change the color of the ellipsis
+            color: 'black', 
           },
         }}
       />
