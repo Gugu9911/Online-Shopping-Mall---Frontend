@@ -1,104 +1,55 @@
-import userSlice, {
-    fetchUserById,
-    getAllUsers,
-    loginUser,
-    createUser,
-  } from "../../redux/slices/userSlice";
-  import { createNewStore } from "../../redux/store";
-  import { mockUsersData } from "../mockdata/user";
-  import { userServer } from "../server/userServer";
-  
-  let store = createNewStore();
-  
-  beforeAll(() => {
-    userServer.listen();
+import { createNewStore } from "../../redux/store";
+import {
+  fetchUserById,
+  getAllUsers,
+  loginUser,
+  logoutUser,
+} from "../../redux/slices/userSlice";
+import { mockUsersData, mockToken } from "../mockdata/user";
+import { userServer } from "../server/userServer";
+
+beforeAll(() => {
+  userServer.listen();
+});
+
+let store: any;
+
+beforeEach(() => {
+  store = createNewStore();
+  localStorage.clear(); // Clear localStorage
+});
+
+describe("user reducer", () => {
+  test("should fetch all users from api", async () => {
+    await store.dispatch(getAllUsers());
+    expect(store.getState().user.users).toEqual(mockUsersData);
+    expect(store.getState().user.error).toBeNull();
+    expect(store.getState().user.loading).toBeFalsy();
   });
-  
-  afterAll(() => {
-    userServer.close();
+
+  test("should fetch single user from api", async () => {
+    const userId = 1; // Assuming you want to fetch the user with ID 1
+    await store.dispatch(fetchUserById(userId));
+    const expectedUser = mockUsersData.find(user => user.id === userId);
+    expect(store.getState().user.user).toEqual(expectedUser);
+    expect(store.getState().user.error).toBeNull();
+    expect(store.getState().user.loading).toBeFalsy();
   });
-  
-  beforeEach(() => {
-    store = createNewStore();
+
+  test("should login a user and fetch their profile", async () => {
+    const credentials = { email: "dani@gmail.com", password: "123456" };
+    await store.dispatch(loginUser(credentials));
+    expect(store.getState().user.user).toEqual(mockUsersData[0]);
+    expect(localStorage.getItem("token")).toEqual(mockToken.access_token);
+    expect(store.getState().user.error).toBeNull();
+    expect(store.getState().user.loading).toBeFalsy();
   });
-  
-  describe("user reducer", () => {
-    //test for fetch all data of users
-    test("should fetch all users from api", async () => {
-      await store.dispatch(getAllUsers());
-      expect(store.getState().users.users.length).toBe(4);
-      expect(store.getState().users.error).toBeNull();
-      expect(store.getState().users.loading).toBeFalsy();
-    });
-    //test for fetch single user
-    test("should fetch single user from api", async () => {
-      const dispatchedAction = await store.dispatch(fetchUserById(2));
-      const expectedAction = {
-        type: "fetchUserById/fulfilled",
-        payload: {
-          data: {
-            id: 2,
-            email: "maria@mail.com",
-            password: "12345",
-            name: "Maria",
-            role: "customer",
-            avatar: "https://i.imgur.com/DTfowdu.jpg",
-            creationAt: "2024-02-29T03:37:26.000Z",
-            updatedAt: "2024-02-29T03:37:26.000Z",
-          },
-          id: 2,
-        },
-        meta: {
-          arg: 2,
-          requestId: expect.any(String),
-          requestStatus: "fulfilled",
-        },
-      };
-      expect(dispatchedAction).toEqual(expectedAction);
-      expect(store.getState().users.error).toBeNull();
-      expect(store.getState().users.loading).toBeFalsy();
-    });
-    //test for updating user
-    test("should update a user", async () => {
-      const updates = {
-        id: 1,
-        data: {
-          name: "Jack",
-          email: "jack@mail.com",
-        },
-      };
-      const expectedAction = {
-        type: "updateUser/fulfilled",
-        payload: {
-          id: 1,
-          email: "jack@mail.com",
-          password: "changeme",
-          name: "Jack",
-          role: "customer",
-          avatar: "https://i.imgur.com/LDOO4Qs.jpg",
-          creationAt: "2024-02-29T03:37:26.000Z",
-          updatedAt: "2024-02-29T03:37:26.000Z",
-        },
-        meta: {
-          arg: {
-            id: 1,
-            data: {
-              name: "Jack",
-              email: "jack@mail.com",
-            },
-          },
-          requestId: expect.any(String),
-          requestStatus: "fulfilled",
-        },
-      };
-      expect(store.getState().users.error).toBeNull();
-      expect(store.getState().users.loading).toBeFalsy();
-    });
-    //test for login user
-    test("should login a user", async () => {
-      await store.dispatch(
-        loginUser({ email: "garfiled@mail.com", password: "garfield45" })
-      );
-      expect(store.getState().users.user?.email).toBe("garfiled@mail.com");
-    });
+
+  test("should logout a user", async () => {
+    // First, simulate a user login
+    localStorage.setItem("token", mockToken.access_token);
+    store.dispatch(logoutUser());
+    expect(localStorage.getItem("token")).toBeNull();
+    expect(store.getState().user.user).toBeNull();
   });
+});

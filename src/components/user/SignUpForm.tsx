@@ -3,7 +3,7 @@ import { createUser } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { uploadFile } from '../../redux/slices/fileSlice';
-import { Button, TextField, Box, Typography, Modal, CircularProgress, Container, Grid, Paper } from '@mui/material';
+import { Button, TextField, Box, Typography, Modal, CircularProgress, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const Input = styled('input')({

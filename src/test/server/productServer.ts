@@ -2,12 +2,12 @@ import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 
 import { NewProduct, Product } from "../../types/Product";
-import { mockProducts } from "../../test/mockdata/product";
+import { mockProductsItem } from "../../test/mockdata/product";
 
 export const handler = [
   //Handler for fetching all products
   http.get("https://api.escuelajs.co/api/v1/products", () => {
-    return HttpResponse.json(mockProducts, { status: 200 });
+    return HttpResponse.json(mockProductsItem, { status: 200 });
   }),
   //Handler for creating a new product
   http.post("https://api.escuelajs.co/api/v1/products", async ({ request }) => {
@@ -30,13 +30,13 @@ export const handler = [
     "https://api.escuelajs.co/api/v1/products/:id",
     async ({ params }) => {
       const id = Number(params.id);
-      const product = mockProducts.find((item) => item.id === id);
+      const product = mockProductsItem.find((item) => item.id === id);
       return HttpResponse.json(product, { status: 200 });
     }
   ),
   //Handler for updating a product
   http.put("https://api.escuelajs.co/api/v1/products/:id", async () => {
-    const product = mockProducts[1];
+    const product = mockProductsItem[1];
     product.title = "Stylish Notebook";
     return HttpResponse.json(product, { status: 200 });
   }),
@@ -45,11 +45,11 @@ export const handler = [
     "https://api.escuelajs.co/api/v1/products/:id",
     async ({ params }) => {
       const id = Number(params.id);
-      const product = mockProducts.filter((item) => item.id !== id);
+      const product = mockProductsItem.filter((item) => item.id !== id);
       if (!product) {
         return new HttpResponse(null, { status: 404 });
       }
-      mockProducts.splice(0, 1);
+      mockProductsItem.splice(0, 1);
       return HttpResponse.json(true, { status: 200 });
     }
   ),

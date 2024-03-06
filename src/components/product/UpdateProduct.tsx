@@ -5,7 +5,7 @@ import { fetchProductById, updateProduct } from '../../redux/slices/productSlice
 import { fetchAllCategories } from '../../redux/slices/categorySlice';
 import { UpdatedProduct } from '../../types/Product';
 import { uploadFile } from '../../redux/slices/fileSlice';
-import { Button, TextField, FormControl, InputLabel, Select, MenuItem, Box, Typography, Grid, Input, Paper, Container, CssBaseline } from '@mui/material';
+import { Button, TextField, FormControl, InputLabel, Select, MenuItem, Box, Typography, Grid, Paper, Container, CssBaseline } from '@mui/material';
 import  { SelectChangeEvent } from '@mui/material/Select';
 
 

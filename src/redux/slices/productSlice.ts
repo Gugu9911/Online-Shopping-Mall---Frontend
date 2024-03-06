@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk, Update } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Product, ProductState, NewProduct, UpdatedProduct } from '../../types/Product'; // Adjust the path as necessary
 import axios from 'axios';
 

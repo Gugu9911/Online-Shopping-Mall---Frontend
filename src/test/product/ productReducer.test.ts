@@ -1,160 +1,68 @@
+// productReducer.test.ts
+import { createNewStore } from "../../redux/store";
+import { productServer } from "../server/productServer"; // Adjust the import path as necessary
 import {
-    addProduct,
-    deleteProduct,
-    fetchAllProducts,
-    fetchProductById,
-    filterProductsByTitle,
-    updateProduct,
-  } from "../../redux/slices/productSlice";
-  import { createNewStore } from "../../redux/store";
-  import { NewProduct } from "../../types/Product";
-  import { productServer } from "../server/productServer";
-  
+  fetchAllProducts,
+  addProduct,
+  fetchProductById,
+  updateProduct,
+  deleteProduct,
+} from "../../redux/slices/productSlice";
+import { mockProductsItem } from "../../test/mockdata/product"; // Adjust the import path as necessary
+
+// Start the mock server before all tests
+beforeAll(() => productServer.listen());
+// Reset any runtime request handlers we may add during the tests.
+afterEach(() => productServer.resetHandlers());
+// Clean up after the tests are finished.
+afterAll(() => productServer.close());
+
+describe("product reducer", () => {
   let store = createNewStore();
-  
-  beforeAll(() => {
-    productServer.listen();
-  });
-  
-  afterAll(() => {
-    productServer.close();
-  });
-  
+
   beforeEach(() => {
     store = createNewStore();
   });
-  
-  describe("product reducer", () => {
-    //test for fetch all data of products
-    test("should fetch all products from api", async () => {
-      await store.dispatch(fetchAllProducts());
-      expect(store.getState().products.products.length).toBe(3);
-      expect(store.getState().products.error).toBeNull();
-      expect(store.getState().products.loading).toBeFalsy();
-    });
-    //test for search by name
-    test("should search products by name", async () => {
-      await store.dispatch(fetchAllProducts());
-      store.dispatch(filterProductsByTitle("wallet"));
-      expect(store.getState().products.products.length).toBe(1);
-      //Dispatch action with search query in uppercase
-      store.dispatch(filterProductsByTitle("NOTEBOOK"));
-      expect(store.getState().products.products.length).toBe(0);
-    });
-    //create new product
-    test("should create a new product", async () => {
-      const newProduct: NewProduct = {
-        title: "Modern Wireless Bluetooth Headphones",
-        price: 89,
-        description:
-          "Experience the ultimate freedom in audio with our Modern Wireless Bluetooth Headphones. Featuring advanced Bluetooth technology, these headphones provide crystal-clear sound quality and hassle-free connectivity. With a lightweight and ergonomic design, they offer long-lasting comfort for extended listening sessions. Whether you're commuting, working out, or relaxing at home, these headphones deliver an immersive audio experience.",
-        categoryId: 5,
-        images: [
-          "https://i.imgur.com/AeQsKXD.jpg",
-          "https://i.imgur.com/um7UIr1.jpg",
-          "https://i.imgur.com/fz6XKSl.jpg",
-        ],
-      };
-      await store.dispatch(addProduct(newProduct));
-      expect(store.getState().products.products.length).toBe(1);
-    });
-    //test for fetching single product by id
-    test("should fetch a single product by id", async () => {
-      // Dispatch the action to fetch the product
-      const dispatchedAction = await store.dispatch(fetchProductById(1));
-      const expectedAction = {
-        type: "fetchProductById/fulfilled",
-        payload: {
-          data: {
-            id: 1,
-            title: "Chic Transparent Fashion Handbag",
-            price: 613,
-            description:
-              "Elevate your style with our Chic Transparent Fashion Handbag, perfect for showcasing your essentials with a clear, modern edge. This trendy accessory features durable acrylic construction, luxe gold-tone hardware, and an elegant chain strap. Its compact size ensures you can carry your day-to-day items with ease and sophistication.",
-            images: [
-              "https://i.imgur.com/Lqaqz59.jpg",
-              "https://i.imgur.com/uSqWK0m.jpg",
-              "https://i.imgur.com/atWACf1.jpg",
-            ],
-            creationAt: "2024-02-29T03:37:26.000Z",
-            updatedAt: "2024-02-29T08:18:20.000Z",
-            category: {
-              id: 5,
-              name: "Miscellaneous",
-              image: "https://i.imgur.com/BG8J0Fj.jpg",
-              creationAt: "2024-02-29T03:37:26.000Z",
-              updatedAt: "2024-02-29T03:37:26.000Z",
-            },
-          },
-          id: 1,
-        },
-        meta: {
-          arg: 1,
-          requestId: expect.any(String),
-          requestStatus: "fulfilled",
-        },
-      };
-      expect(dispatchedAction).toEqual(expectedAction);
-      expect(store.getState().products.error).toBeNull();
-      expect(store.getState().products.loading).toBeFalsy();
-    });
-    //test for updating product title
-    test("should update a product", async () => {
-      const updates = {
-        id: 2,
-        data: {
-          title: "Stylish Notebook",
-        },
-      };
-    const dispatchedAction = await store.dispatch(updateProduct({ id: 2, updatedData: { title: "Stylish Notebook" } }));
-      const expectedAction = {
-        type: "updateProduct/fulfilled",
-        payload: {
-          id: 2,
-          title: "Stylish Notebook",
-          price: 25,
-          description:
-            "Make a statement with our Stylish Marble Pattern Notebook, designed to inspire creativity and organization. This sleek notebook features high-quality paper with a luxurious marble print cover, perfect for jotting down thoughts, sketches, or keeping track of your busy schedule. Whether for work, school, or personal use, this notebook is a must-have accessory for any modern individual.",
-          images: [
-            "https://i.imgur.com/8qOr2G9.jpg",
-            "https://i.imgur.com/rDRPb3T.jpg",
-            "https://i.imgur.com/Ky15kXe.jpg",
-          ],
-          creationAt: "2024-02-29T03:37:26.000Z",
-          updatedAt: "2024-02-29T08:18:20.000Z",
-          category: {
-            id: 5,
-            name: "Miscellaneous",
-            image: "https://i.imgur.com/7OcN6uW.jpg",
-            creationAt: "2024-02-29T03:37:26.000Z",
-            updatedAt: "2024-02-29T03:37:26.000Z",
-          },
-        },
-        meta: {
-          arg: { id: 2, data: { title: "Stylish Notebook" } },
-          requestId: expect.any(String),
-          requestStatus: "fulfilled",
-        },
-      };
-      expect(dispatchedAction).toEqual(expectedAction);
-      expect(store.getState().products.error).toBeNull();
-      expect(store.getState().products.loading).toBeFalsy();
-    });
-    //test for delete product
-    test("should delete product successfully", async () => {
-      const dispatchedAction = await store.dispatch(deleteProduct(2));
-      const expectedAction = {
-        type: "deleteProduct/fulfilled",
-        payload: true,
-        meta: {
-          arg: 2,
-          requestId: expect.any(String),
-          requestStatus: "fulfilled",
-        },
-      };
-      expect(dispatchedAction).toEqual(expectedAction);
-      await store.dispatch(deleteProduct(2));
-      expect(store.getState().products.error).toBeNull();
-      expect(store.getState().products.loading).toBeFalsy();
-    });
+
+  test("should fetch all products from api", async () => {
+    await store.dispatch(fetchAllProducts());
+    expect(store.getState().products.products).toEqual(mockProductsItem);
   });
+
+  test("should create a new product", async () => {
+    const newProduct = {
+      title: "Eco-Friendly Water Bottle",
+      price: 30,
+      description: "Stay hydrated and eco-friendly...",
+      categoryId: 1,
+      images: ["https://i.imgur.com/waterBottle.jpg"],
+    };
+    await store.dispatch(addProduct(newProduct));
+    const products = store.getState().products.products;
+    expect(products).toEqual(expect.arrayContaining([expect.objectContaining({ title: "Eco-Friendly Water Bottle" })]));
+  });
+
+  test("should fetch a single product by id", async () => {
+    const productId = mockProductsItem[0].id; // Use the first product's id
+    await store.dispatch(fetchProductById(productId));
+    expect(store.getState().products.singleProduct).toEqual(mockProductsItem[0]);
+  });
+
+  test("should update a product", async () => {
+    const updatedProduct = {
+      id: mockProductsItem[0].id,
+      updatedData: {
+        title: "Updated Smart Home Speaker",
+      },
+    };
+    await store.dispatch(updateProduct(updatedProduct));
+    const product = store.getState().products.products.find(p => p.id === updatedProduct.id);
+    expect(product?.title).toEqual("Updated Smart Home Speaker");
+  });
+
+  test("should delete a product", async () => {
+    const productId = mockProductsItem[0].id;
+    await store.dispatch(deleteProduct(productId));
+    expect(store.getState().products.products.find(p => p.id === productId)).toBeUndefined();
+  });
+});

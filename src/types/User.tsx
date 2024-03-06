@@ -5,6 +5,8 @@ export type User = {
     name: string;
     role: 'customer' | 'admin'; 
     avatar: string;
+    creationAt: string;
+    updatedAt: string;
   };
   
 

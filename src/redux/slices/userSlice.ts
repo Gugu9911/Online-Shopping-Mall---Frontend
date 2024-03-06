@@ -1,5 +1,5 @@
 // Import createAsyncThunk
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { SignupUser, User, UserInitialState } from '../../types/User'; // Adjust the path as necessary
 import axios, { AxiosResponse } from 'axios';
 
