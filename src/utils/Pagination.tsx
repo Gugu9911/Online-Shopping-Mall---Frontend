@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pagination as MUIPagination, Stack } from '@mui/material';
-import { PaginationProps } from '../../types/Product';
+import { PaginationProps } from '../types/Product';
 
 const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange }: PaginationProps) => {
   const pageCount = Math.ceil(totalItems / itemsPerPage);

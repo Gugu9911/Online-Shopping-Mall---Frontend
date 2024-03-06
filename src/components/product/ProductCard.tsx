@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { Product } from '../../types/Product';
 import AddToCart from '../cart/AddToCart';
 import { getImageUrl } from '../../utils/imageHandler';
-import Pagination from './Pagination';
+import Pagination from '../../utils/Pagination';
 import { Box, Card, CardActionArea, CardContent, CardMedia, Typography, Button, CardActions, Grid } from '@mui/material';
 
 const ProductCards = ({ products }: { products: Product[] }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
@@ -32,9 +32,9 @@ const ProductCards = ({ products }: { products: Product[] }) => {
                   <Typography gutterBottom variant="h5" component="div">
                     {product.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  {/* <Typography variant="body2" color="text.secondary">
                     {product.description}
-                  </Typography>
+                  </Typography> */}
                   <Typography variant="body1" color="text.primary">
                     Price: ${product.price}
                   </Typography>

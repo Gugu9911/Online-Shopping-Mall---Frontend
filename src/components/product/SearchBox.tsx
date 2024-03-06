@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Grid } from '@mui/material';
-import { useAppDispatch } from '../../redux/hooks';
+
 
 interface SearchBoxProps {
     onSearch: (query: string) => void; // Function to handle the search query

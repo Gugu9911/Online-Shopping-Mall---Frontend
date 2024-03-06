@@ -5,7 +5,7 @@ import ProductCards from './ProductCard';
 import { useAppDispatch } from '../../redux/hooks';
 import { sortProductsByPrice } from '../../utils/sortProducts';
 import SearchBox from './SearchBox';
-import { Box, CircularProgress, Typography, Select, MenuItem, FormControl, InputLabel, Grid, Paper } from '@mui/material';
+import { Box, CircularProgress, Typography, Select, MenuItem, FormControl, InputLabel, Grid } from '@mui/material';
 
 
 const Products = () => {
