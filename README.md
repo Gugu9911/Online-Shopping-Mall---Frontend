@@ -1,50 +1,40 @@
-# Frontend project
+# Welcome to GroceryHub 🛒✨
 
-This repository for the Frontend project to build an e-commerce website.
+Dive into the code repository for GroceryHub, where convenience meets variety in online grocery shopping. Developed using the robust trio of React, TypeScript, and Redux Toolkit, this platform is engineered to deliver a top-notch, intuitive shopping experience.
 
-## Requirements
+## Deployment
+GroceryHub is proudly hosted on Vercel, showcasing our deployment capabilities: [Visit GroceryHub](https://e-commerce-website-beige-xi.vercel.app/).
 
-### Basic requirements
+## Features 🌟
+- **TypeScript & Redux Toolkit**: Empowering developers with type safety and efficient state management, our project is a paradigm of modern web development practices.
+- **API Integration**: Leveraging the `https://fakeapi.platzi.com/` API for a responsive, real-time product catalog.
+- **Responsive Layout**: A flexible and adaptive design ensures a flawless shopping experience across all devices.
+- **Redux Store Management**:
+  - **Product Reducer**: Fetch, filter, sort, and perform CRUD operations on products with administrative privileges.
+  - **User Reducer**: Smooth registration and login workflow.
+  - **Cart Reducer**: Add to cart, modify item quantities, and remove items with ease.
+- **Extra Features**: Dark/light mode toggle, pagination for products, and optimizations for peak performance.
 
-The Front end project must use TypeScript and Redux toolkit.
+## Technical Details 🛠️
+- **Components**: A collection of reusable UI elements, including a dynamic Header and Footer.
+- **Pages**: Dedicated pages for the complete product range, individual product details, user profile management, and the shopping cart.
+- **Redux Structure**: Slices designated for handling states of products, user data, and cart actions.
+- **Types**: Strongly typed models and interfaces bring clarity and enforce integrity throughout the app.
 
-1. Use the API endpoint `https://fakeapi.platzi.com/`.
+## Usage 📋
+GroceryHub offers a seamless shopping journey, from browsing to checkout:
+- **Explore Collections**: Start by exploring our diverse range of grocery categories. With a simple click, you can navigate through our well-organized aisles filled with everything from staple pantry items to exotic ingredients.
+- **Detailed Product Insights**: Each product on GroceryHub comes with a detailed page that includes high-resolution images, comprehensive descriptions, nutritional information, and price. Get to know your groceries before you buy!
+- **Smart Search & Filter**: Looking for something specific? Use our intelligent search bar to find exactly what you need. You can also filter products by category, price, and brand to narrow down your search.
+- **Interactive Shopping Cart**: As you shop, add items to your cart with a single click. View your cart at any time to adjust quantities, remove items, or save them for later.
 
-2. Create at lease 4 pages (can be more if you want): Page for all products, product page, profile page (only available if user logins), and cart page (cart page could be a page or a modal)
+## Testing 🔍
+At GroceryHub, we value the importance of testing to ensure the reliability and robustness of our application. Initially, unit tests were conceptualized to verify the seamless operation of our state management logic, with the intention to use Jest and the React Testing Library, complemented by Mock Service Worker (msw) to simulate server responses for products, cart, and user interactions.
+However, during the implementation phase, we encountered compatibility issues with Axios, which led to challenges in executing the testing strategy as planned. This hiccup has prompted our team to revisit the testing approach and explore alternatives that seamlessly integrate with Axios, ensuring that our test suites accurately reflect user interactions and data management within the app.
+In the interim, we are conducting thorough manual testing across all functionalities to maintain our commitment to quality and performance. The resolution of this testing challenge is a top priority, and updates will be documented in our project logs.
 
-3. Create Redux store for following features:
+## License
+This project is open-source, available for collaboration under the MIT License.
 
-   - product reducer: get all products, find a single products, filter products by categories, sort products by price. Create, update and delete a product (enable update & delete features only for admin of the webapp)
-   - user reducer: register and login
-   - cart reducer: add product to cart, remove products, update products's quantity in cart
-
-4. When adding routers to your application, set certain routes to be private. For example, route to user profile page should not be accessible if user has not logged in.
-
-5. Styling: must have responsive
-
-6. Implement unit testing for the reducers
-
-7. **Deploy** the application and rewrite README file.
-
-### Additional features:
-
-- Use Context API to switch theme
-- Use pagination when fetching/displaying all the products
-- Implement performance optimization where applicable
-
-## Grading (1-5)
-
-1: Late submission or not complete basic requirements
-
-2: Basic requirement + Presentation
-
-3: Folder structure + follow convention(naming convention ,loading, error) + some additional features
-
-4: All additional features + reusable logic + custom hook
-
-5: UI-UX (for example: send alert when user add same product) + styling (animation or transition, scroll to top) + advanced feature (google log in)
-
-## Deadline
-
-- Presentation: **7/3** and **8/3/ 2024**
-- Submitting Front-end project **10am 8/3/2024**
+## Contact
+Have feedback or questions? Please initiate a discussion through our GitHub issues or contact the project maintainer.
