@@ -29,8 +29,10 @@ GroceryHub offers a seamless shopping journey, from browsing to checkout:
 4. **Interactive Shopping Cart**: As shoppers proceed, they can add items to the cart with a single click. View the cart at any time to adjust quantities, remove items, or save them for later.
 
 ## Testing 🔍
-At GroceryHub, the importance of testing to ensure the reliability and robustness of applications is taken seriously. Initially, the concept of unit testing was to verify the seamless operation of the state management logic, with the aim of using Jest and React testing libraries, supplemented by a Mock Service Worker (msw) to simulate server responses for products, shopping carts and user interactions.
+At GroceryHub, the importance of testing to ensure the reliability and robustness of applications is taken seriously. Initially, the concept of unit testing was to verify the seamless operation of the state management logic, with the aim of using Jest and React testing libraries, supplemented by a Mock Service Worker (msw) to simulate server responses for products, shopping carts, and user interactions.
+
 Although many tests have been successfully carried out and completed, sometimes compatibility issues with Axios are encountered, which brings challenges to the execution of the test strategy as planned. This issue prompted a re-examination of testing methods and exploration of alternatives that integrate seamlessly with Axios to ensure that the test suite accurately reflects user interactions and data management within the website.
+
 During this time, all features have been thoroughly manually tested to maintain the commitment to quality and performance.
 
 ## License
