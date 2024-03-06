@@ -9,7 +9,7 @@ const Footer = () => {
   const backgroundColor = theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.background.paper;
 
   return (
-    <footer style={{ backgroundColor, padding: theme.spacing(3, 0), color: theme.palette.text.primary }}>
+    <footer style={{ backgroundColor, padding: theme.spacing(3, 0), color: theme.palette.text.primary, marginTop: theme.spacing(4) }}> {/* 增加marginTop来添加顶部间距 */}
       <Container maxWidth="lg">
         <Grid container spacing={3} justifyContent="space-between" alignItems="center">
           <Grid item xs={12} sm={6}>

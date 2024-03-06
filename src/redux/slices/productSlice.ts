@@ -127,7 +127,7 @@ export const filterProductsByTitle = createAsyncThunk<any, string, { rejectValue
   }
 );
 
-//modify product
+//update product
 export const updateProduct = createAsyncThunk<any, { id: number; updatedData: UpdatedProduct }, { rejectValue: string }>(
   'product/updateProduct',
   async ({ id, updatedData }, { rejectWithValue }) => {

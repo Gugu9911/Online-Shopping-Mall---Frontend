@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button, TextField, Grid, Paper, Typography, Container } from '@mui/material';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

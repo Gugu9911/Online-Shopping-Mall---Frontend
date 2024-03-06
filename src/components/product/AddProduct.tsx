@@ -1,18 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { addProduct } from '../../redux/slices/productSlice'; 
-import { uploadFile } from '../../redux/slices/fileSlice'; 
-import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch,useAppSelector } from '../../redux/hooks';
-import { NewProduct } from '../../types/Product'; 
+import { addProduct } from '../../redux/slices/productSlice';
+import { uploadFile } from '../../redux/slices/fileSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { NewProduct } from '../../types/Product';
 import { fetchAllCategories } from '../../redux/slices/categorySlice';
 import { CategoryState } from '../../types/Category';
 import { useNavigate } from 'react-router-dom';
+import { Button, TextField, TextareaAutosize, FormControl, InputLabel, Select, MenuItem, Box, Typography, Grid, Paper } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import 'react-toastify/dist/ReactToastify.css';
 
+const Input = styled('input')({
+  display: 'none',
+});
+
+const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
+  width: '100%',
+  border: `1px solid ${theme.palette.divider}`,
+  padding: theme.spacing(2),
+  borderRadius: theme.shape.borderRadius,
+  fontSize: '0.875rem',
+  fontFamily: theme.typography.fontFamily,
+  transition: theme.transitions.create(['border-color', 'box-shadow']),
+  '&:focus': {
+    boxShadow: `${theme.palette.primary.main} 0 0 0 2px`,
+    borderColor: theme.palette.primary.main,
+  },
+}));
 
 const AddProduct = () => {
   const dispatch = useAppDispatch();
   const categories = useAppSelector((state: { categories: CategoryState }) => state.categories);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [newProduct, setNewProduct] = useState<NewProduct>({
     title: '',
@@ -25,100 +44,123 @@ const AddProduct = () => {
   useEffect(() => {
     dispatch(fetchAllCategories());
   }, [dispatch]);
-  
 
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setNewProduct({ ...newProduct, [name]: value });
   };
 
-  // Handle file input for images, upload them, and update state with URLs
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       const uploadPromises = files.map(file => dispatch(uploadFile(file)).unwrap());
-  
+
       try {
         const imageResponses = await Promise.all(uploadPromises);
         const imageUrls = imageResponses.map(response => response.location); // Assuming the response has a location property
         setNewProduct({ ...newProduct, images: imageUrls });
       } catch (error) {
-        alert('Error uploading image(s)'); 
+        alert('Error uploading image(s)');
       }
     }
   };
-  
 
-// Submit the new product with image URLs
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  const productToSubmit: NewProduct = {
-    ...newProduct,
-    categoryId: Number(newProduct.categoryId),
-    price: Number(newProduct.price)
-  };
-  dispatch(addProduct(productToSubmit))
-    .unwrap()
-    .then(() => {
-      alert('Product added successfully'); // 使用 alert 替代 toast.success
-      // Reset the form by setting the state back to its initial values
-      setNewProduct({
-        title: '',
-        price: 0,
-        description: '',
-        categoryId: 0,
-        images: [],
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const productToSubmit: NewProduct = {
+      ...newProduct,
+      categoryId: Number(newProduct.categoryId),
+      price: Number(newProduct.price),
+    };
+    dispatch(addProduct(productToSubmit))
+      .unwrap()
+      .then(() => {
+        alert('Product added successfully');
+        setNewProduct({
+          title: '',
+          price: 0,
+          description: '',
+          categoryId: 0,
+          images: [],
+        });
+        navigate('/');
+      })
+      .catch((error) => {
+        alert(`Error: ${error}`);
       });
-      navigate('/');
-      // Optionally redirect the user
-    })
-    .catch((error) => {
-      alert(`Error: ${error}`); // 使用 alert 替代 toast.error
-    });
-};
-
-  
-
-  // Change handler for the category dropdown
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
-    setNewProduct({ ...newProduct, categoryId: Number(value) });
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
-          <input type="text" name="title" value={newProduct.title} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Price:</label>
-          <input type="number" name="price" value={newProduct.price} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Description:</label>
-          <textarea name="description" value={newProduct.description} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Category:</label>
-          <select name="categoryId" value={newProduct.categoryId} onChange={handleCategoryChange} required>
-            <option value="">Select a Category</option>
-            {categories.categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Images:</label>
-          <input type="file" multiple onChange={handleFileChange} />
-        </div>
-        <button type="submit">Add Product</button>
-      </form>
-    </div>
+    <Box sx={{ flexGrow: 1, padding: 4 }}>
+      <Paper elevation={3} sx={{ padding: 2, margin: 'auto', maxWidth: '100%', overflow: 'hidden' }}>
+        <Typography variant="h6" gutterBottom component="div" sx={{ textAlign: 'center' }}>
+          Add New Product
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={3} justifyContent="center">
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Title"
+                name="title"
+                value={newProduct.title}
+                onChange={handleChange}
+                required
+                sx={{ marginBottom: 2 }}
+              />
+              <TextField
+                fullWidth
+                type="number"
+                label="Price"
+                name="price"
+                value={newProduct.price}
+                onChange={handleChange}
+                required
+                sx={{ marginBottom: 2 }}
+              />
+              <StyledTextArea
+                minRows={3}
+                placeholder="Description"
+                name="description"
+                value={newProduct.description}
+                onChange={handleChange}
+                required
+              />
+              <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 2 }}>
+                <InputLabel>Category</InputLabel>
+                <Select
+                  name="categoryId"
+                  value={String(newProduct.categoryId)}
+                  label="Category"
+                  onChange={e => setNewProduct({ ...newProduct, categoryId: Number(e.target.value) })}
+                  required
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {categories.categories.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <label htmlFor="contained-button-file">
+                <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={handleFileChange} />
+                <Button variant="contained" component="span" fullWidth>
+                  Upload Images
+                </Button>
+              </label>
+            </Grid>
+            <Grid item xs={12} sx={{ marginTop: 2 }}>
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                Add Product
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Paper>
+    </Box>
   );
 };
 

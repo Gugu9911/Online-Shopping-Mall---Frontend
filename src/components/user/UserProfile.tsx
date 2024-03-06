@@ -3,10 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fetchUserById } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
-import { User } from '../../types/User'; 
-import { Avatar } from '@mui/material';
-
-
+import { User } from '../../types/User';
+import { Avatar, Box, Typography, CircularProgress, Paper } from '@mui/material';
 
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +14,7 @@ const UserProfile = () => {
     user: state.user.users.find((user: User) => user.id === parseInt(id ?? '')),
     loading: state.user.loading,
     error: state.user.error,
-}));
+  }));
 
   useEffect(() => {
     if (id) {
@@ -25,24 +23,40 @@ const UserProfile = () => {
   }, [dispatch, id]);
 
   if (loading) {
-    return <div>Loading user...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <CircularProgress />
+      </Box>
+    );
   }
   if (error) {
-    return <div>Error fetching user: {error}</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" p={3}>
+        <Typography variant="h6" color="error">Error fetching user: {error}</Typography>
+      </Box>
+    );
   }
   if (!user) {
-    return <div>User not found</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" p={3}>
+        <Typography variant="h6">User not found</Typography>
+      </Box>
+    );
   }
 
   // Display the user's details
   return (
-    <div className="user-profile">
-      <h2>User Profile</h2>
-      <p><strong>Name:</strong> {user.name}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Role:</strong> {user.role}</p>
-      <Avatar alt={user.name} src={user.avatar} />
-    </div>
+    <Paper elevation={3} sx={{ maxWidth: 600, mx: 'auto', p: 4, my: 5 }}>
+      <Typography variant="h4" component="h2" gutterBottom>
+        User Profile
+      </Typography>
+      <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+        <Avatar alt={user.name} src={user.avatar} sx={{ width: 100, height: 100 }} />
+        <Typography variant="body1"><strong>Name:</strong> {user.name}</Typography>
+        <Typography variant="body1"><strong>Email:</strong> {user.email}</Typography>
+        <Typography variant="body1"><strong>Role:</strong> {user.role}</Typography>
+      </Box>
+    </Paper>
   );
 };
 
