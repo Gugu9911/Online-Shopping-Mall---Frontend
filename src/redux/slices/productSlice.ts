@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Product, ProductState, NewProduct, UpdatedProduct } from '../../types/Product'; // Adjust the path as necessary
 import axios from 'axios';
-
+import { BASE_URL } from '../../misc/constants';
 
 // Define the initial state using that type
 const initialState: ProductState = {
@@ -13,7 +13,7 @@ const initialState: ProductState = {
 
 
 //Fetch data
-const URL = "https://api.escuelajs.co/api/v1/products";
+const URL = BASE_URL + '/products';
 
 // Define thunk for fetching all products
 export const fetchAllProducts = createAsyncThunk<Product[], undefined, { rejectValue: string }>(

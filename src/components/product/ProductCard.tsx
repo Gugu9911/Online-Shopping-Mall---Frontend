@@ -25,12 +25,12 @@ const ProductCards = ({ products }: { products: Product[] }) => {
                 <CardMedia
                   component="img"
                   height="140"
-                  image={getImageUrl(product.images[0])}
-                  alt={product.title}
+                  image={getImageUrl(product.image)}
+                  alt={product.name}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    {product.title}
+                    {product.name}
                   </Typography>
                   {/* <Typography variant="body2" color="text.secondary">
                     {product.description}

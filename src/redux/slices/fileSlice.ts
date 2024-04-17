@@ -2,7 +2,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { FileUploadResponse } from '../../types/File'; // Adjust the import path as necessary
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { BASE_URL } from '../../misc/constants';
 
+// Define the URL
+const URLFiles = BASE_URL + '/files/upload';
 
 // Define thunk for uploading a file
 export const uploadFile = createAsyncThunk<FileUploadResponse, File>(
@@ -12,7 +15,7 @@ export const uploadFile = createAsyncThunk<FileUploadResponse, File>(
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await axios.post<FileUploadResponse>('https://api.escuelajs.co/api/v1/files/upload', formData, {
+      const response = await axios.post<FileUploadResponse>(URLFiles, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

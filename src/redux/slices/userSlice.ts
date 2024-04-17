@@ -2,11 +2,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { SignupUser, User, UserInitialState } from '../../types/User'; // Adjust the path as necessary
 import axios, { AxiosResponse } from 'axios';
+import  {BASE_URL} from '../../misc/constants';
 
 
-const URL = "https://api.escuelajs.co/api/v1/users";
-const LOGIN_URL = "https://api.escuelajs.co/api/v1/auth/login";
-const profileUrl = "https://api.escuelajs.co/api/v1/auth/profile";
+const URL = BASE_URL + '/users';
+const LOGIN_URL = BASE_URL + '/auth/login';
+const profileUrl = BASE_URL + '/auth/profile';
 
 
 // Create a new user

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
 import { Category, CategoryState } from "../../types/Category";
+import { BASE_URL } from "../../misc/constants";
 
 //Fetch data
-const urlCategories = "https://api.escuelajs.co/api/v1/categories";
+const urlCategories = BASE_URL + '/categories';
 
 const initialState: CategoryState = {
   categories: [],

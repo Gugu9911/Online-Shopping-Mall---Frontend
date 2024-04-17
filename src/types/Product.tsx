@@ -3,13 +3,11 @@ import { Category } from "./Category";
 //Define type for product data
 export type Product = {
     id: number;
-    title: string;
+    name: string;
     price: number;
     description: string;
-    images: string[];
     category: Category;
-    creationAt?: string;
-    updatedAt?: string;
+    image: string;
   };
 
   //Define initial state for products
