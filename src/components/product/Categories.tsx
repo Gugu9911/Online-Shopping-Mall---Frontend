@@ -12,7 +12,7 @@ const Categories = () => {
   const dispatch = useAppDispatch();
   const { categories, loading: categoriesLoading, error: categoriesError } = useAppSelector((state: { categories: CategoryState }) => state.categories);
   const { products, loading: productsLoading, error: productsError } = useAppSelector((state: { products: ProductState }) => state.products);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [sortOrder, setSortOrder] = useState<string>('');
 

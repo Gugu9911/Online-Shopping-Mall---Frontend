@@ -55,11 +55,12 @@ export const fetchProductById = createAsyncThunk<Product, string, { rejectValue:
 );
 
 // Fetch products by category id
-export const fetchProductsByCategoryId = createAsyncThunk<Product[], number, { rejectValue: string }>(
+export const fetchProductsByCategoryId = createAsyncThunk<Product[], string, { rejectValue: string }>(
   'products/fetchProductsByCategoryId',
   async (categoryId, { rejectWithValue }) => {
     try {
-      const response = await axios.get<Product[]>(`https://api.escuelajs.co/api/v1/categories/${categoryId}/products`);
+      const response = await axios.post<Product[]>(`${URL}/${categoryId}`);
+      console.log(categoryId);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
