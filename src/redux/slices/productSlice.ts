@@ -37,9 +37,9 @@ export const fetchAllProducts = createAsyncThunk<Product[], undefined, { rejectV
 );
 
 // Featch product by id
-export const fetchProductById = createAsyncThunk<Product, number, { rejectValue: string }>(
+export const fetchProductById = createAsyncThunk<Product, string, { rejectValue: string }>(
   'products/fetchProductById',
-  async (id: number, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${URL}/${id}`);
       console.log('response', response.data);
@@ -94,7 +94,7 @@ export const addProduct = createAsyncThunk<Product, NewProduct, { rejectValue: s
 );
 
 //delete product
-export const deleteProduct = createAsyncThunk<Product, number, { rejectValue: string }>(
+export const deleteProduct = createAsyncThunk<Product, string, { rejectValue: string }>(
   'products/deleteProduct',
   async (id, { rejectWithValue }) => {
     try {

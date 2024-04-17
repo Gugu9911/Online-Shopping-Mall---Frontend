@@ -26,7 +26,7 @@ const UpdateProduct = () => {
   });
 
   useEffect(() => {
-    if (productId) dispatch(fetchProductById(Number(productId)));
+    if (productId) dispatch(fetchProductById(productId));
   }, [dispatch, productId]);
 
   useEffect(() => {
