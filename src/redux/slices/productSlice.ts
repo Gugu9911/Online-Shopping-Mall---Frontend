@@ -41,7 +41,7 @@ export const fetchProductById = createAsyncThunk<Product, string, { rejectValue:
   'products/fetchProductById',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${URL}/${id}`);
+      const response = await axios.get(`${URL}/by-id/${id}`);
       console.log('response', response.data);
       return response.data;
     } catch (error) {
@@ -111,12 +111,13 @@ export const deleteProduct = createAsyncThunk<Product, string, { rejectValue: st
   }
 );
 
-// Filter products by title
-export const filterProductsByTitle = createAsyncThunk<any, string, { rejectValue: string }>(
-  'products/filterProductsByTitle',
-  async (title, { rejectWithValue }) => {
+// Filter products by name
+export const filterProductsByName = createAsyncThunk<any, string, { rejectValue: string }>(
+  'products/filterProductsByName',
+  async (name, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${URL}/?title=${encodeURIComponent(title)}`);
+      const response = await axios.get(`${URL}/by-name/${name}`);
+      console.log(name);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -230,14 +231,14 @@ const productSlice = createSlice({
       });
     // Add the filterProductsByTitle cases
     builder
-      .addCase(filterProductsByTitle.pending, (state) => {
+      .addCase(filterProductsByName.pending, (state) => {
         state.loading = true;
       })
-      .addCase(filterProductsByTitle.fulfilled, (state, action) => {
+      .addCase(filterProductsByName.fulfilled, (state, action) => {
         state.loading = false;
         state.products = action.payload;
       })
-      .addCase(filterProductsByTitle.rejected, (state, action) => {
+      .addCase(filterProductsByName.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'An error occurred';
       });

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { fetchAllProducts, filterProductsByTitle } from '../../redux/slices/productSlice';
+import { fetchAllProducts, filterProductsByName } from '../../redux/slices/productSlice';
 import ProductCards from './ProductCard';
 import { useAppDispatch } from '../../redux/hooks';
 import { sortProductsByPrice } from '../../utils/sortProducts';
@@ -19,7 +19,7 @@ const Products = () => {
   }, [dispatch]);
 
   const handleSearch = (query: string) => {
-    dispatch(filterProductsByTitle(query));
+    dispatch(filterProductsByName(query));
     setSearchQuery(query);
   };
 
