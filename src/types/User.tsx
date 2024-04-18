@@ -1,12 +1,12 @@
 export type User = {
     id: number;
+    firstname: string;
+    lastname: string;
+    password: string;
     email: string;
-    password: string; 
-    name: string;
-    role: 'customer' | 'admin'; 
+    userName: string;
+    role: string;
     avatar: string;
-    creationAt: string;
-    updatedAt: string;
   };
   
 

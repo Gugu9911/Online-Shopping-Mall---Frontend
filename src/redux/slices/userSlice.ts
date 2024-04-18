@@ -1,13 +1,13 @@
 // Import createAsyncThunk
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { SignupUser, User, UserInitialState } from '../../types/User'; // Adjust the path as necessary
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import  {BASE_URL} from '../../misc/constants';
 
 
 const URL = BASE_URL + '/users';
-const LOGIN_URL = BASE_URL + '/auth/login';
-const profileUrl = BASE_URL + '/auth/profile';
+const LOGIN_URL = BASE_URL + '/users/login';
+const profileUrl = BASE_URL + '/users/profile';
 
 
 // Create a new user
@@ -35,15 +35,16 @@ export const createUser = createAsyncThunk(
 
 
 //Define thunk for user with session
-const getAuthentication = createAsyncThunk(
-  "getAuthentication",
-  async (access_token: string, { rejectWithValue }) => {
+export const getProfile = createAsyncThunk(
+  "getProfile",
+  async (token: string, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse<User> = await axios.get(profileUrl, {
+      const response= await axios.post(profileUrl, {},{
         headers: {
-          Authorization: `Bearer ${access_token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
+      console.log('User profile:', response.data);
       return response.data;
     } catch (e) {
       return rejectWithValue(e);
@@ -68,10 +69,10 @@ export const loginUser = createAsyncThunk(
       });
       console.log('User logged in successfully:', response.data); // Log the response data
       // Store the token in local storage
-      localStorage.setItem("token", response.data.access_token);
+      localStorage.setItem("token", response.data);
       // Use the token to get the user's profile
       const authentication = await dispatch(
-        getAuthentication(response.data.access_token)
+        getProfile(response.data)
       );
       // Back to the user's profile
       return authentication.payload as User;
@@ -117,25 +118,25 @@ export const getAllUsers = createAsyncThunk(
 );
 
 // Define thunk for fetching single user by ID
-export const fetchUserById = createAsyncThunk(
-  "user/fetchUserById",
-  async (id: number, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${URL}/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      // Optionally log the fetched data for development purposes
-      console.log(`Fetched user by ID ${id}:`, response.data);
-      return response.data; // Directly return the user data
-    } catch (error: any) {
-      console.error(`Error fetching user by ID ${id}:`, error.response?.data?.message || error.message);
-      // Reject with the error message. Prefer using the error response from the server if available.
-      return rejectWithValue(error.response?.data?.message || error.message);
-    }
-  }
-);
+// export const fetchUserById = createAsyncThunk(
+//   "user/fetchUserById",
+//   async (id: string, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(`${URL}/${id}`, {
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       });
+//       // Optionally log the fetched data for development purposes
+//       console.log(`Fetched user by ID ${id}:`, response.data);
+//       return response.data; // Directly return the user data
+//     } catch (error: any) {
+//       console.error(`Error fetching user by ID ${id}:`, error.response?.data?.message || error.message);
+//       // Reject with the error message. Prefer using the error response from the server if available.
+//       return rejectWithValue(error.response?.data?.message || error.message);
+//     }
+//   }
+// );
 
 
 
@@ -205,18 +206,33 @@ export const userSlice = createSlice({
       });
 
     // Handling fetchUserById
+    // builder
+    //   .addCase(fetchUserById.pending, (state) => {
+    //     state.loading = true;
+    //   })
+    //   .addCase(fetchUserById.fulfilled, (state, action) => {
+    //     state.loading = false;
+    //     state.user = action.payload; 
+    //   })
+    //   .addCase(fetchUserById.rejected, (state, action) => {
+    //     state.loading = false;
+    //     state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
+    //   });
+
+    // Handling getProfile
     builder
-      .addCase(fetchUserById.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchUserById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload; 
-      })
-      .addCase(fetchUserById.rejected, (state, action) => {
-        state.loading = false;
-        state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
-      });
+    .addCase(getProfile.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(getProfile.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    })
+    .addCase(getProfile.rejected, (state, action) => {
+      state.loading = false;
+      state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
+    });
+
   },
 });
 

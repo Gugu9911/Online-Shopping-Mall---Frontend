@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { logoutUser, getAllUsers } from '../redux/slices/userSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { Link as RouterLink } from 'react-router-dom';
-import { User } from '../types/User';
 import { AppBar, Toolbar, Typography, Button, IconButton, Link, Menu, MenuItem, useMediaQuery, useTheme, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -15,8 +14,6 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
   const user = useSelector((state: RootState) => state.user.user);
   const isLoggedIn = Boolean(user);
-  const username = user?.name;
-  const [userId, setUserId] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
   const theme = useTheme();
@@ -26,15 +23,17 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
     if (isLoggedIn) {
       dispatch(getAllUsers())
         .unwrap()
-        .then(users => {
-          const user = users.find((user: User) => user.name === username);
-          if (user) {
-            setUserId(user.id);
-          }
+        .then(user => {
+          // Assuming you intended to find a user and do something with it,
+          // but since it's not used, we're removing it to clear the warning.
+          // You can add logic here if needed.
         })
         .catch(error => console.error('Error fetching users:', error));
     }
-  }, [dispatch, isLoggedIn, username]);
+  }, [dispatch, isLoggedIn, user?.userName]);
+
+
+
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -45,6 +44,7 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -87,7 +87,7 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
                 <>
                   {userRole === 'admin' && <MenuItem onClick={handleClose} component={RouterLink} to="/addProduct">Add Product</MenuItem>}
                   <MenuItem onClick={handleClose} component={RouterLink} to="/cart">Shopping Cart</MenuItem>
-                  <MenuItem onClick={handleClose} component={RouterLink} to={`/profile/${userId}`}>Profile</MenuItem>
+                  <MenuItem onClick={handleClose} component={RouterLink} to="/profile">Profile</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   {toggleTheme && <MenuItem onClick={toggleTheme}>Toggle Theme</MenuItem>}
                 </>
@@ -107,8 +107,11 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
               <>
                 {userRole === 'admin' && <Link component={RouterLink} to="/addProduct" color="inherit" sx={{ m: 1 }}>Add Product</Link>}
                 <Link component={RouterLink} to="/cart" color="inherit" sx={{ m: 1 }}>Shopping Cart</Link>
-                <Link component={RouterLink} to={`/profile/${userId}`} color="inherit" sx={{ m: 1 }}>Profile</Link>
-                <Typography sx={{ m: 1 }}>Welcome! {username}</Typography>
+                <Link component={RouterLink} to={`/profile`} color="inherit" sx={{ m: 1 }}>Profile</Link>
+                <Typography sx={{ m: 1 }}>
+                  Welcome! {user?.userName}
+                </Typography>
+
                 <Button onClick={handleLogout} color="inherit" sx={{ m: 1 }}>Logout</Button>
               </>
             )}

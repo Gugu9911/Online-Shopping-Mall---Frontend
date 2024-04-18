@@ -1,26 +1,26 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { fetchUserById } from '../../redux/slices/userSlice';
+import { getProfile } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
-import { User } from '../../types/User';
 import { Avatar, Box, Typography, CircularProgress, Paper } from '@mui/material';
 
 const UserProfile = () => {
-  const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
   const { user, loading, error } = useSelector((state: any) => ({
-    user: state.user.users.find((user: User) => user.id === parseInt(id ?? '')),
+    user: state.user.user,
     loading: state.user.loading,
     error: state.user.error,
   }));
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchUserById(parseInt(id)));
+    const token = localStorage.getItem('token');
+    if (token) {
+      dispatch(getProfile(token));
+    }else{
+      console.log('No token found');
     }
-  }, [dispatch, id]);
+  }, [dispatch]);
 
   if (loading) {
     return (
