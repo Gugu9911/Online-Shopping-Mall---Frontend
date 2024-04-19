@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { logoutUser, getAllUsers } from '../redux/slices/userSlice';
 import { useAppDispatch } from '../redux/hooks';
+import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, IconButton, Link, Menu, MenuItem, useMediaQuery, useTheme, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -15,6 +16,7 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
   const user = useSelector((state: RootState) => state.user.user);
   const isLoggedIn = Boolean(user);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -38,13 +40,14 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
   const handleLogout = () => {
     dispatch(logoutUser());
     alert('User logged out successfully');
+    navigate('/');
   };
 
   const userRole = useSelector((state: any) => state.user.user?.role);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -87,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
                 <>
                   {userRole === 'admin' && <MenuItem onClick={handleClose} component={RouterLink} to="/addProduct">Add Product</MenuItem>}
                   <MenuItem onClick={handleClose} component={RouterLink} to="/cart">Shopping Cart</MenuItem>
-                  <MenuItem onClick={handleClose} component={RouterLink} to="/profile">Profile</MenuItem>
+                  <MenuItem onClick={handleClose} component={RouterLink} to={`/profile/${user?.id}`}>Profile</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   {toggleTheme && <MenuItem onClick={toggleTheme}>Toggle Theme</MenuItem>}
                 </>
@@ -107,7 +110,7 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
               <>
                 {userRole === 'admin' && <Link component={RouterLink} to="/addProduct" color="inherit" sx={{ m: 1 }}>Add Product</Link>}
                 <Link component={RouterLink} to="/cart" color="inherit" sx={{ m: 1 }}>Shopping Cart</Link>
-                <Link component={RouterLink} to={`/profile`} color="inherit" sx={{ m: 1 }}>Profile</Link>
+                <Link component={RouterLink} to={`/profile/${user?.id}`} color="inherit" sx={{ m: 1 }}>Profile</Link>
                 <Typography sx={{ m: 1 }}>
                   Welcome! {user?.userName}
                 </Typography>

@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getProfile } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
-import { Avatar, Box, Typography, CircularProgress, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Avatar, Box, Typography, CircularProgress, Paper, Button } from '@mui/material';
 
 const UserProfile = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { user, loading, error } = useSelector((state: any) => ({
     user: state.user.user,
@@ -21,6 +23,8 @@ const UserProfile = () => {
       console.log('No token found');
     }
   }, [dispatch]);
+
+
 
   if (loading) {
     return (
@@ -44,6 +48,15 @@ const UserProfile = () => {
     );
   }
 
+
+    const handleModifyClick = () => {
+    if (user && user.id) {
+        navigate(`/updateuser/${user.id}`);
+    } else {
+        console.log("User data is not available.");
+    }
+};
+
   // Display the user's details
   return (
     <Paper elevation={3} sx={{ maxWidth: 600, mx: 'auto', p: 4, my: 5 }}>
@@ -51,10 +64,13 @@ const UserProfile = () => {
         User Profile
       </Typography>
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-        <Avatar alt={user.name} src={user.avatar} sx={{ width: 100, height: 100 }} />
-        <Typography variant="body1"><strong>Name:</strong> {user.name}</Typography>
+        <Avatar alt={user.userName} src={user.avatar} sx={{ width: 100, height: 100 }} />
+        <Typography variant="body1"><strong>UserName:</strong> {user.userName}</Typography>
+        <Typography variant="body1"><strong>FirstName:</strong> {user.firstName}</Typography>
+        <Typography variant="body1"><strong>LastName:</strong> {user.lastName}</Typography>
         <Typography variant="body1"><strong>Email:</strong> {user.email}</Typography>
         <Typography variant="body1"><strong>Role:</strong> {user.role}</Typography>
+        <Button variant="outlined" onClick={handleModifyClick}>Modify</Button>
       </Box>
     </Paper>
   );

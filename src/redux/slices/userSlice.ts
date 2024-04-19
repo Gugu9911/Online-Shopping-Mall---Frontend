@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { SignupUser, User, UserInitialState } from '../../types/User'; // Adjust the path as necessary
 import axios from 'axios';
-import  {BASE_URL} from '../../misc/constants';
+import { BASE_URL } from '../../misc/constants';
 
 
 const URL = BASE_URL + '/users';
@@ -39,7 +39,7 @@ export const getProfile = createAsyncThunk(
   "getProfile",
   async (token: string, { rejectWithValue }) => {
     try {
-      const response= await axios.post(profileUrl, {},{
+      const response = await axios.post(profileUrl, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -78,7 +78,7 @@ export const loginUser = createAsyncThunk(
       return authentication.payload as User;
     } catch (error: any) {
       console.error('Error logging in user:', error.response?.data?.message || error.message); // Log the error
-      return rejectWithValue(error.response?.data?.message || error.message); 
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
@@ -118,25 +118,45 @@ export const getAllUsers = createAsyncThunk(
 );
 
 // Define thunk for fetching single user by ID
-// export const fetchUserById = createAsyncThunk(
-//   "user/fetchUserById",
-//   async (id: string, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.get(`${URL}/${id}`, {
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       });
-//       // Optionally log the fetched data for development purposes
-//       console.log(`Fetched user by ID ${id}:`, response.data);
-//       return response.data; // Directly return the user data
-//     } catch (error: any) {
-//       console.error(`Error fetching user by ID ${id}:`, error.response?.data?.message || error.message);
-//       // Reject with the error message. Prefer using the error response from the server if available.
-//       return rejectWithValue(error.response?.data?.message || error.message);
-//     }
-//   }
-// );
+export const fetchUserById = createAsyncThunk(
+  "user/fetchUserById",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${URL}/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      // Optionally log the fetched data for development purposes
+      console.log(`Fetched user by ID ${id}:`, response.data);
+      return response.data; // Directly return the user data
+    } catch (error: any) {
+      console.error(`Error fetching user by ID ${id}:`, error.response?.data?.message || error.message);
+      // Reject with the error message. Prefer using the error response from the server if available.
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+// Define thunk for updating user
+export const updateUserProfile = createAsyncThunk(
+  "user/updateUser",
+  async ({token,user}:{token: string; user: User}, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${URL}/${user.id}`, user, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('User updated:', response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error('Error updating user:', error.response?.data?.message || error.message);
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
 
 
 
@@ -187,7 +207,7 @@ export const userSlice = createSlice({
 
     // Handling logoutUser
     builder
-      .addCase(logoutUser.fulfilled, (state,action) => {
+      .addCase(logoutUser.fulfilled, (state, action) => {
         state.user = null; // Reset user to null upon logout
       });
 
@@ -206,32 +226,45 @@ export const userSlice = createSlice({
       });
 
     // Handling fetchUserById
-    // builder
-    //   .addCase(fetchUserById.pending, (state) => {
-    //     state.loading = true;
-    //   })
-    //   .addCase(fetchUserById.fulfilled, (state, action) => {
-    //     state.loading = false;
-    //     state.user = action.payload; 
-    //   })
-    //   .addCase(fetchUserById.rejected, (state, action) => {
-    //     state.loading = false;
-    //     state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
-    //   });
+    builder
+      .addCase(fetchUserById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUserById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload; 
+      })
+      .addCase(fetchUserById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
+      });
 
     // Handling getProfile
     builder
-    .addCase(getProfile.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(getProfile.fulfilled, (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-    })
-    .addCase(getProfile.rejected, (state, action) => {
-      state.loading = false;
-      state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
-    });
+      .addCase(getProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
+      });
+      // Handling updateUser
+    builder
+      .addCase(updateUserProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'An error occurred';
+      });
 
   },
 });

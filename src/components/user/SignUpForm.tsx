@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { createUser } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
-import { uploadFile } from '../../redux/slices/fileSlice';
-import { Button, TextField, Box, Typography, Modal, CircularProgress, Container } from '@mui/material';
+import { Button, TextField, Box, Typography, Modal, CircularProgress, Container, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { uploadImage } from '../../misc/uploadFileService';
 
 const Input = styled('input')({
   display: 'none',
 });
 
 const SignupForm = () => {
-  const [name, setName] = useState('');
+  const [userName, setUserName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [avatar, setAvatar] = useState('');
@@ -20,22 +22,22 @@ const SignupForm = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
+
   // handleFileChange and handleSubmit methods remain unchanged
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Keep the original logic for handling file changes
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const uploadPromises = files.map(file => dispatch(uploadFile(file)).unwrap());
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files[0]) {
       try {
-        const imageResponses = await Promise.all(uploadPromises);
-        const imageUrls = imageResponses.map(response => response.location);
-        setAvatar(imageUrls[0]);
-        console.log('imageUrls', imageUrls);
+        const file = files[0];
+        const imageUrl = await uploadImage(file);
+        console.log('imageUrl:', imageUrl);
+        setAvatar(imageUrl);
       } catch (error) {
-        alert('Error uploading image(s)');
+        console.error('Error uploading image:', error);
       }
     }
   };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // Keep the original logic for handling form submission
     event.preventDefault();
@@ -53,9 +55,16 @@ const SignupForm = () => {
       return;
     }
 
-    const avatarUrl = avatar || "https://api.lorem.space/image/face?w=640&h=480&r=867";
+    const avatarUrl = avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1IFgfJq69WCi4xDSFAO5We7zXgcwqyzMiQQ&s";
 
-    const userData = { name, email, password, avatar: avatarUrl };
+    const userData = {
+      userName,
+      firstName,
+      lastName,
+      email,
+      password,
+      avatar: avatarUrl
+    };
 
     try {
       const actionResult = await dispatch(createUser(userData));
@@ -84,79 +93,107 @@ const SignupForm = () => {
         <Typography variant="h4" component="h2" gutterBottom>
           Signup
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <label htmlFor="contained-button-file">
-            <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={handleFileChange} />
-            <Button variant="outlined" component="span" fullWidth sx={{ mb: 2 }}>
-              Upload Avatar
-            </Button>
-          </label>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            label="Username"
-            name="name"
-            autoComplete="name"
-            autoFocus
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Avatar
+            src={avatar || "https://via.placeholder.com/150"}  // Default placeholder image URL
+            sx={{ width: 150, height: 150, mb: 2}}
+            alt="User Avatar"
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={loading}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Signup'}
-          </Button>
-        </Box>
 
-        <Modal
-          open={showSuccessModal}
-          onClose={() => setShowSuccessModal(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
+        <label htmlFor="contained-button-file">
+          <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={handleImageUpload} />
+          <Button variant="outlined" component="span" fullWidth sx={{ mb: 2 }}>
+            Upload Avatar
+          </Button>
+        </label>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="firstName"
+          label="First Name"
+          name="firstName"
+          autoComplete="given-name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="lastName"
+          label="Last Name"
+          name="lastName"
+          autoComplete="family-name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="name"
+          label="Username"
+          name="name"
+          autoComplete="name"
+          autoFocus
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          disabled={loading}
         >
-          <Box sx={{
-            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-            width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4,
-          }}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Registration Success
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You will be redirected to the login page shortly.
-            </Typography>
-          </Box>
-        </Modal>
+          {loading ? <CircularProgress size={24} /> : 'Signup'}
+        </Button>
       </Box>
-    </Container>
+
+      <Modal
+        open={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{
+          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+          width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4,
+        }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Registration Success
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            You will be redirected to the login page shortly.
+          </Typography>
+        </Box>
+      </Modal>
+    </Box>
+    </Container >
   );
 };
 

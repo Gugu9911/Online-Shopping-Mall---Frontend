@@ -16,6 +16,7 @@ import AddProduct from './components/product/AddProduct';
 import UserProfile from './components/user/UserProfile';
 import Cart from './pages/Cart';
 import UpdateProduct from './components/product/UpdateProduct';
+import UpdateUserProfile from './components/user/UpdateUser';
 import { CssBaseline, Container } from '@mui/material';
 
 const App = () => {
@@ -40,9 +41,10 @@ const App = () => {
               <Route path='/products/:id' element={<SingleProduct />} />
               <Route path='/categories' element={<Category />} />
               <Route path='/addProduct' element={<AddProduct />} />
-              <Route path='/profile' element={<UserProfile />} />
+              <Route path='/profile/:userId' element={<UserProfile />} />
               <Route path='/cart' element={<Cart />} />
               <Route path='/updateproduct/:productId' element={<UpdateProduct />} />
+              <Route path='/updateuser/:userId' element={<UpdateUserProfile />} />
             </Routes>
             <Footer />
           </Container>

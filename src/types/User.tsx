@@ -1,5 +1,5 @@
 export type User = {
-    id: number;
+    id: string;
     firstname: string;
     lastname: string;
     password: string;
@@ -11,7 +11,9 @@ export type User = {
   
 
   export type SignupUser = {
-    name: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
     email: string;
     password: string;
     avatar : string;

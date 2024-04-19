@@ -20,19 +20,19 @@ export type ProductState = {
 
 //Define type for new product
 export type NewProduct = {
-  title: string;
+  name: string;
   price: number;
   description: string;
-  categoryId: number;
-  images: string[];
+  category: string;
+  image: string;
 };
 
 export type UpdatedProduct = {
-  title?: string;
+  name?: string;
   price?: number;
   description?: string;
-  categoryId?: number;
-  images?: string[];
+  category?: string;
+  image?: string;
 };
 
 export type PaginationProps = {

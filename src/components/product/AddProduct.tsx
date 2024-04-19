@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { addProduct } from '../../redux/slices/productSlice';
-import { uploadFile } from '../../redux/slices/fileSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { NewProduct } from '../../types/Product';
 import { fetchAllCategories } from '../../redux/slices/categorySlice';
 import { CategoryState } from '../../types/Category';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField, TextareaAutosize, FormControl, InputLabel, Select, MenuItem, Box, Typography, Grid, Paper } from '@mui/material';
+import { Button, TextField, TextareaAutosize, FormControl, InputLabel, Select, MenuItem, Box, Typography, Grid, Paper, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { uploadImage } from '../../misc/uploadFileService';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Input = styled('input')({
@@ -32,13 +32,14 @@ const AddProduct = () => {
   const dispatch = useAppDispatch();
   const categories = useAppSelector((state: { categories: CategoryState }) => state.categories);
   const navigate = useNavigate();
+  const [image, setImage] = useState('');
 
   const [newProduct, setNewProduct] = useState<NewProduct>({
-    title: '',
+    name: '',
     price: 0,
     description: '',
-    categoryId: 0,
-    images: [],
+    category: '',
+    image: '',
   });
 
   useEffect(() => {
@@ -50,38 +51,45 @@ const AddProduct = () => {
     setNewProduct({ ...newProduct, [name]: value });
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const uploadPromises = files.map(file => dispatch(uploadFile(file)).unwrap());
-
+  // handleFileChange and handleSubmit methods remain unchanged
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files[0]) {
       try {
-        const imageResponses = await Promise.all(uploadPromises);
-        const imageUrls = imageResponses.map(response => response.location); // Assuming the response has a location property
-        setNewProduct({ ...newProduct, images: imageUrls });
+        const file = files[0];
+        const imageUrl = await uploadImage(file);
+        console.log('imageUrl:', imageUrl);
+        setImage(imageUrl);
       } catch (error) {
-        alert('Error uploading image(s)');
+        console.error('Error uploading image:', error);
       }
     }
   };
+
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const productToSubmit: NewProduct = {
       ...newProduct,
-      categoryId: Number(newProduct.categoryId),
-      price: Number(newProduct.price),
+      category: newProduct.category,
+      price: newProduct.price,
     };
+
+    const imageUrl = image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMdb1SV8txyHe0RSMikSkGbch9-EF5cnlxpw&s';
+
+    productToSubmit.image = imageUrl;
+
     dispatch(addProduct(productToSubmit))
       .unwrap()
       .then(() => {
         alert('Product added successfully');
         setNewProduct({
-          title: '',
+          name: '',
           price: 0,
           description: '',
-          categoryId: 0,
-          images: [],
+          category: '',
+          image: '',
         });
         navigate('/');
       })
@@ -101,9 +109,9 @@ const AddProduct = () => {
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                label="Title"
-                name="title"
-                value={newProduct.title}
+                label="Name"
+                name="name"
+                value={newProduct.name}
                 onChange={handleChange}
                 required
                 sx={{ marginBottom: 2 }}
@@ -130,13 +138,13 @@ const AddProduct = () => {
                 <InputLabel>Category</InputLabel>
                 <Select
                   name="categoryId"
-                  value={String(newProduct.categoryId)}
+                  value={newProduct.category}
                   label="Category"
-                  onChange={e => setNewProduct({ ...newProduct, categoryId: Number(e.target.value) })}
+                  onChange={e => setNewProduct({ ...newProduct, category: (e.target.value) })}
                   required
                 >
                   <MenuItem value="">
-                    <em>None</em>
+                    <em>Please select a category:</em>
                   </MenuItem>
                   {categories.categories.map((category) => (
                     <MenuItem key={category.id} value={category.id}>
@@ -145,8 +153,13 @@ const AddProduct = () => {
                   ))}
                 </Select>
               </FormControl>
+              <Avatar
+                src={image || "https://via.placeholder.com/150"} 
+                sx={{ width: 150, height: 150, mb: 2 , marginLeft: 'auto', marginRight: 'auto'}}
+                alt="User Avatar"
+              />
               <label htmlFor="contained-button-file">
-                <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={handleFileChange} />
+                <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={handleImageUpload} />
                 <Button variant="contained" component="span" fullWidth>
                   Upload Images
                 </Button>
