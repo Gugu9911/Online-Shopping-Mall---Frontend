@@ -18,8 +18,11 @@ import Cart from './pages/Cart';
 import UpdateProduct from './components/product/UpdateProduct';
 import UpdateUserProfile from './components/user/UpdateUser';
 import Manage from './pages/Manage';
-import ManageCategories from './components/category/ManageCategory';
+import ManageCategories from './components/manage/ManageCategory';
+import Order from './pages/Order';
+import ManageOrders from './components/manage/ManageOrders';
 import { CssBaseline, Container } from '@mui/material';
+
 
 const App = () => {
   const [theme, setTheme] = useState(lightTheme); 
@@ -49,6 +52,8 @@ const App = () => {
               <Route path='/updateuser/:userId' element={<UpdateUserProfile />} />
               <Route path='/manage' element={<Manage />} />
               <Route path='/managecategories' element={<ManageCategories />} />
+              <Route path='/orders' element={<Order />} />
+              <Route path='/manageorders' element={<ManageOrders />} />
             </Routes>
             <Footer />
           </Container>

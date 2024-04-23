@@ -11,7 +11,7 @@ import { Category } from '../../types/Category';
 
 const CategoryManagement: React.FC = () => {
     const dispatch = useAppDispatch();
-    const { categories, loading, error } = useAppSelector((state) => state.categories);
+    const { categories } = useAppSelector((state) => state.categories);
     const [newCategoryName, setNewCategoryName] = useState('');
     const [editCategoryId, setEditCategoryId] = useState('');
     const [editedName, setEditedName] = useState('');
@@ -49,6 +49,7 @@ const CategoryManagement: React.FC = () => {
       .unwrap()
       .then(() => {
         dispatch(fetchAllCategories());  // Refetch categories
+        console.log('Successfully deleted category');
       })
       .catch((error) => console.error('Deletion failed:', error));
   };

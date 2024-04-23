@@ -3,6 +3,7 @@ import userReducer from './slices/userSlice';
 import productReducer from './slices/productSlice';
 import categoryReducer from './slices/categorySlice';
 import cartReducer from './slices/cartSlice';
+import orderReducer from './slices/orderSlice';
 
 //for testing purposes
 import categorySlice from './slices/categorySlice';
@@ -14,6 +15,7 @@ export const store = configureStore({
     products: productReducer,
     categories: categoryReducer,
     cart: cartReducer,
+    order: orderReducer,
   },
 });
 
@@ -30,6 +32,7 @@ export const createNewStore = () => {
       categories: categorySlice,
       users: userReducer,
       cart: cartReducer,
+      order: orderReducer,
     },
   });
 };
