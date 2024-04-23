@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getAllOrders, deleteOrder } from '../../redux/slices/orderSlice';
 import { Masonry } from '@mui/lab';
 import { Card, CardContent, CardMedia, Typography, Box, CircularProgress, Button } from '@mui/material';
 import { RootState } from '../../redux/store';
 import { Order, OrderItem } from '../../types/Order';
+import Pagination from '../../utils/Pagination';
 
 const OrdersPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const { user, loading: userLoading, error: userError } = useAppSelector((state: RootState) => state.user);
     const { orders, loading: ordersLoading, error: ordersError } = useAppSelector((state: RootState) => state.order);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 3;
+    const indexOfLastOrder = currentPage * itemsPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - itemsPerPage;
+    const currentOrders = orders ? orders.slice(indexOfFirstOrder, indexOfLastOrder) : [];
+    
 
     useEffect(() => {
         if (user) {
@@ -21,8 +29,9 @@ const OrdersPage: React.FC = () => {
                     console.error('Failed to fetch orders:', error);
                 });
         }
-    }, [dispatch]);
+    }, [dispatch, user]);
 
+    const handlePageChange = (pageNumber: number) => setCurrentPage(pageNumber);
 
     const handleDelete = (orderId: string) => {
         dispatch(deleteOrder(orderId)).unwrap()
@@ -57,7 +66,7 @@ const OrdersPage: React.FC = () => {
     return (
         <Box sx={{ flexGrow: 1, padding: 2 }}>
             <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
-                {orders.map((order: Order) => (
+                {currentOrders.map((order: Order) => (
                     <Card raised key={order.id}>
                         <CardContent>
                             <Typography gutterBottom>
@@ -116,6 +125,14 @@ const OrdersPage: React.FC = () => {
                     </Card>
                 ))}
             </Masonry>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+                <Pagination
+                    totalItems={orders.length}
+                    itemsPerPage={itemsPerPage}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                />
+            </Box>
         </Box>
     );
 
