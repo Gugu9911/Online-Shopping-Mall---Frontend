@@ -51,7 +51,7 @@ const Categories = () => {
               More
             </Button>
             {showDropdown && (
-              <Box className="dropdown-menu" sx={{ position: 'absolute', backgroundColor: 'white', boxShadow: 3 }}>
+              <Box className="dropdown-menu" sx={{ position: 'absolute', backgroundColor: 'white', boxShadow: 3, right: 0, }}>
                 {moreCategories.map(category => (
                   <Button key={category.id} onClick={() => setSelectedCategory(category.id)} sx={{ display: 'block', my: 0.5 }}>
                     {category.name}

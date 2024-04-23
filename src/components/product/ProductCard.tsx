@@ -8,7 +8,7 @@ import { Box, Card, CardActionArea, CardContent, CardMedia, Typography, Button, 
 
 const ProductCards = ({ products }: { products: Product[] }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
+  const itemsPerPage = 8;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);

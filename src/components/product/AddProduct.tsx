@@ -154,8 +154,8 @@ const AddProduct = () => {
                 </Select>
               </FormControl>
               <Avatar
-                src={image || "https://via.placeholder.com/150"} 
-                sx={{ width: 150, height: 150, mb: 2 , marginLeft: 'auto', marginRight: 'auto'}}
+                src={image || "https://via.placeholder.com/300"} 
+                sx={{ width: 300, height: 300, mb: 2 , marginLeft: 'auto', marginRight: 'auto', borderRadius: 0}}
                 alt="User Avatar"
               />
               <label htmlFor="contained-button-file">

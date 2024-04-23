@@ -108,7 +108,9 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme }) => {
             <Link component={RouterLink} to="/categories" color="inherit" sx={{ m: 1 }}>Categories</Link>
             {isLoggedIn && (
               <>
-                {userRole === 'admin' && <Link component={RouterLink} to="/addProduct" color="inherit" sx={{ m: 1 }}>Add Product</Link>}
+                {userRole === 'admin' && 
+                <Link component={RouterLink} to="/manage" color="inherit" sx={{ m: 1 }}>Manage</Link>
+                }
                 <Link component={RouterLink} to="/cart" color="inherit" sx={{ m: 1 }}>Shopping Cart</Link>
                 <Link component={RouterLink} to={`/profile/${user?.id}`} color="inherit" sx={{ m: 1 }}>Profile</Link>
                 <Typography sx={{ m: 1 }}>

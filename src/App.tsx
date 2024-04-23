@@ -17,6 +17,8 @@ import UserProfile from './components/user/UserProfile';
 import Cart from './pages/Cart';
 import UpdateProduct from './components/product/UpdateProduct';
 import UpdateUserProfile from './components/user/UpdateUser';
+import Manage from './pages/Manage';
+import ManageCategories from './components/category/ManageCategory';
 import { CssBaseline, Container } from '@mui/material';
 
 const App = () => {
@@ -45,6 +47,8 @@ const App = () => {
               <Route path='/cart' element={<Cart />} />
               <Route path='/updateproduct/:productId' element={<UpdateProduct />} />
               <Route path='/updateuser/:userId' element={<UpdateUserProfile />} />
+              <Route path='/manage' element={<Manage />} />
+              <Route path='/managecategories' element={<ManageCategories />} />
             </Routes>
             <Footer />
           </Container>

@@ -112,7 +112,7 @@ const UpdateProduct = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" alignItems="center" gap={2}>
 
-          <Avatar src={imagePreview || updatedProduct.image} sx={{ width: 100, height: 100 }} />
+          <Avatar src={imagePreview || updatedProduct.image} sx={{ width: 300, height: 300, borderRadius: 0 }} />
           <Grid item xs={12}>
             <Button variant="contained" component="label" sx={{ minBlockSize: 2 }}>
               Upload Product Picture
