@@ -77,9 +77,11 @@ export const addProduct = createAsyncThunk<Product, NewProduct, { rejectValue: s
   'products/addProduct',
   async (newProduct, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.post<Product>(URL, newProduct, {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       });
       return response.data;
@@ -99,7 +101,12 @@ export const deleteProduct = createAsyncThunk<Product, string, { rejectValue: st
   'products/deleteProduct',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`${URL}/${id}`);
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(`${URL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -135,7 +142,13 @@ export const updateProduct = createAsyncThunk<any, { id: string; updatedData: Up
   async ({ id, updatedData }, { rejectWithValue }) => {
     try {
       console.log('updatedData', updatedData);
-      const response = await axios.put(`${URL}/${id}`, updatedData);
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`${URL}/${id}`, updatedData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log(' response', response.data);
       return response.data;
     } catch (error) {
