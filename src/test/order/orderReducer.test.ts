@@ -55,8 +55,8 @@ describe('order slice', () => {
       
       const user: User = {
         id: 'user1',
-        firstname: 'John',
-        lastname: 'Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         password: 'password',
         email: 'john@example.com',
         userName: 'johndoe',

@@ -16,8 +16,8 @@ describe('user slice', () => {
 
   // Mock user data
   const mockUsers: User[] = [
-    { id: '1', firstname: 'John', lastname: 'Doe', password: 'password1', email: 'john.doe@example.com', userName: 'johndoe', role: 'admin', avatar: 'avatar-url-1' },
-    { id: '2', firstname: 'Jane', lastname: 'Smith', password: 'password2', email: 'jane.smith@example.com', userName: 'janesmith', role: 'user', avatar: 'avatar-url-2' },
+    { id: '1', firstName: 'John', lastName: 'Doe', password: 'password1', email: 'john.doe@example.com', userName: 'johndoe', role: 'admin', avatar: 'avatar-url-1' },
+    { id: '2', firstName: 'Jane', lastName: 'Smith', password: 'password2', email: 'jane.smith@example.com', userName: 'janesmith', role: 'user', avatar: 'avatar-url-2' },
   ];
 
   const newUser: SignupUser = {
