@@ -5,7 +5,7 @@ async function uploadImage(file: File): Promise<string> {
   formData.append('image', file);
 
   try {
-    const response = await axios.post('http://localhost:3001/api/v1/images/upload-image', formData, {
+    const response = await axios.post('https://online-shopping-mall-api.onrender.com/api/v1/images/upload-image', formData, {
       headers: {
         'Content-Type': 'multipart/form-data', 
       },
