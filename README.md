@@ -129,6 +129,9 @@ Running the Tests
 ```bash
 npm test
 ```
+#### Test Successfullly:
+![test](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/tests.png)
+
 
 ## Collaboration and License
 
