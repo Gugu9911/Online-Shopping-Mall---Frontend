@@ -1,43 +1,120 @@
-# Welcome to GroceryHub 🛒✨
 
-Dive into the code repository for GroceryHub, where convenience meets variety in online grocery shopping. Developed using the robust trio of React, TypeScript, and Redux Toolkit, this platform is engineered to deliver a top-notch, intuitive shopping experience.
+# GroceryHub Frontend 🛒✨
 
-## Deployment
-GroceryHub is proudly hosted on Vercel, showcasing our deployment capabilities: [Visit GroceryHub](https://e-commerce-website-five-delta.vercel.app/).
+Welcome to the frontend repository for GroceryHub, your premier online grocery shopping destination. Developed using React, TypeScript, Redux Toolkit, and Material UI, GroceryHub offers a seamless and responsive shopping experience across all devices.
+
+## Quick Links
+
+- **Live Website:** [Visit GroceryHub](https://online-shopping-mall.vercel.app/)
+- **API Endpoint:** [GroceryHub API](https://online-shopping-mall-api.onrender.com/)
+- **Backend Repository:** [GroceryHub Backend](https://github.com/Gugu9911/Online-Shopping-Mall---API)
 
 ## Features 🌟
-1. **TypeScript & Redux Toolkit**: Empowering developers with type safety and efficient state management, the project is a paradigm of modern web development practices.
-2. **API Integration**: Leveraging the `https://fakeapi.platzi.com/` API for a responsive, real-time product catalog.
-3. **Responsive Layout**: A flexible and adaptive design ensures a flawless shopping experience across all devices.
-4. **Redux Store Management**:
-   - **Product Reducer**: Fetch, filter, sort, and perform CRUD operations on products with administrative privileges.
-   - **User Reducer**: Smooth registration and login workflow.
-   - **Cart Reducer**: Add to cart, modify item quantities, and remove items with ease.
-5. **Extra Features**: Dark/light mode toggle and pagination for products.
+
+GroceryHub is designed to enhance the online shopping experience with advanced features and functionalities:
+
+1. **Type Safety and State Management**:
+   - Utilizes TypeScript for strong typing and Redux Toolkit for efficient state management.
+
+2. **Responsive Design**:
+   - Adapts smoothly to different screen sizes ensuring a flawless shopping experience on any device.
+
+3. **Dynamic Interactions**:
+   - Includes a dark/light mode toggle and pagination for product listings.
+
+4. **Advanced Product Management**:
+   - Supports comprehensive CRUD operations for products, allowing for creation, reading, updating, and deletion with admin privileges.
+
+5. **User Authentication**:
+   - Streamlined registration and login process using custom user reducer actions.
+
+6. **Enhanced Shopping Cart**:
+   - Facilitates adding, updating, and removing products, with immediate feedback on the cart state.
 
 ## Technical Details 🛠️
-1. **Components**: A collection of reusable UI elements, including a dynamic Header and Footer.
-2. **Pages**: Dedicated pages for the complete product range, individual product details, user profile management, and the shopping cart.
-3. **Redux Structure**: Slices designated for handling states of products, user data, and cart actions.
-4. **Types**: Strongly typed models and interfaces bring clarity and enforce integrity throughout the app.
+
+### Structure:
+
+- **Components**: Reusable UI components like headers, footers, and buttons.
+- **Pages**: Specific pages for product listings, product details, user profiles, and shopping cart management.
+- **Redux**: Organized slices for managing states of products, users, order and cart actions.
+- **Router**: Utilizes React Router for navigation and routing management.
+
+### Key Technologies:
+
+- **React**: Framework for building the user interface.
+- **Redux Toolkit**: For state management across the app.
+- **Material UI**: For styling and responsive design elements.
+- **TypeScript**: Programming language used for type safety and scalability.
+
 
 ## Usage 📋
-GroceryHub offers a seamless shopping journey, from browsing to checkout:
-1. **Explore Collections**: Start by exploring a diverse range of grocery categories. With a simple click, navigate through well-organized aisles filled with everything from staple pantry items to exotic ingredients.
-2. **Detailed Product Insights**: Each product on GroceryHub comes with a detailed page that includes high-resolution images, comprehensive descriptions, nutritional information, and price. Get to know the groceries before buying!
-3. **Smart Search & Filter**: Looking for something specific? Use the intelligent search bar to find exactly what's needed. Also, filter products by category, price, and brand to narrow down the search.
-4. **Interactive Shopping Cart**: As shoppers proceed, they can add items to the cart with a single click. View the cart at any time to adjust quantities, remove items, or save them for later.
+
+### Shopping Journey
+
+- **Explore Products**: Navigate through a diverse range of categories to find everything from daily essentials to exotic ingredients.
+- **Product Details**: Access detailed information on each product, including high-resolution images, descriptions, nutritional facts, and prices.
+- **Search and Filter**: Use the search bar and filters to easily locate products by name, category, or price.
+- **Interactive Cart**: Effortlessly manage your shopping cart; add items, adjust quantities, or save them for later.
+
+### User Interaction
+
+- **Registration and Login**: Users can register for a new account and log in to access personalized features.
+- **Profile Management**: Users can view their profile, update personal information, and manage their account settings.
+- **Order Management**: Users can create orders from their shopping carts, view their order history, and delete orders if necessary.
+- **Category Management**: Admins have the ability to create, retrieve, and delete product categories to organize the inventory effectively.
+
+### Additional Features
+
+- **Theme Switching**: Users can toggle between dark and light themes using the Context API.
+- **Pagination**: Implements pagination to manage and display the product listings efficiently, enhancing load times and user experience.
+- **Responsive Design**: The site features a responsive layout, ensuring a seamless shopping experience on both desktops and mobile devices.
+
+### Permissions Structure
+
+- **Visitor**: Can browse products, use filters, log in, and create user accounts.
+- **Logged-in User**: Beyond visitor capabilities, they can add products to the shopping cart, proceed to checkout, and manage their orders and profiles.
+- **Admin**: Has all the privileges of logged-in users, with additional capabilities such as adding, deleting, and modifying products and categories.
+
+
+## Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have the following software and tools installed on your system:
+-  **Node.js**: Version 16.18.80 or newer.
+
+### Installation
+
+To get started with the project, the first step is to clone the repository to your local machine. Open your terminal and run the following git command:
+```bash
+git  clone https://github.com/Gugu9911/Online-Shopping-Mall---Frontend.git
+```
+
+After cloning the project, navigate to the project directory and install the required dependencies by running:
+```bash
+npm  install
+```
+
+Running the Project
+```bash
+npm  start
+```
 
 ## Testing 🔍
-At GroceryHub, the importance of testing to ensure the reliability and robustness of applications is taken seriously. Initially, the concept of unit testing was to verify the seamless operation of the state management logic, with the aim of using Jest and React testing libraries, supplemented by a Mock Service Worker (msw) to simulate server responses for products, shopping carts, and user interactions.
 
-Although many tests have been successfully carried out and completed, sometimes compatibility issues with Axios are encountered, which brings challenges to the execution of the test strategy as planned. This issue prompted a re-examination of testing methods and exploration of alternatives that integrate seamlessly with Axios to ensure that the test suite accurately reflects user interactions and data management within the website.
+- **Jest and msw**: Tools used for running unit tests and mocking service workers to ensure functionality and reliability.
+- **Run Tests**:
+Running the Tests
+```bash
+npm test
+```
 
-During this time, all features have been thoroughly manually tested to maintain the commitment to quality and performance.
+## Collaboration and License
 
-## License
-This project is open-source, available for collaboration under the MIT License.
+- **Open Source**: This project is open for collaboration under the MIT License.
+- **Contribution**: Feel free to fork the repository, submit pull requests, or open issues for discussion.
 
 ## Contact
-Have feedback or questions? Please initiate a discussion through GitHub issues or contact the project maintainer.
 
+- **Feedback**: For any feedback or questions, please use the GitHub issues or contact the project maintainer directly through GitHub.
