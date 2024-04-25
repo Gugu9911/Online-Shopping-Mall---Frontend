@@ -53,20 +53,30 @@ GroceryHub is designed to enhance the online shopping experience with advanced f
 ### Shopping Journey
 
 - **Explore Products**: Navigate through a diverse range of categories to find everything from daily essentials to exotic ingredients.
+![Explore Products](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/Home.png)
 - **Product Details**: Access detailed information on each product, including high-resolution images, descriptions, nutritional facts, and prices.
+![Product Details](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/ProductDetail.png)
 - **Search and Filter**: Use the search bar and filters to easily locate products by name, category, or price.
+![Search and Filter](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/Search.png)
 - **Interactive Cart**: Effortlessly manage your shopping cart; add items, adjust quantities, or save them for later.
+![Interactive Cart](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/Cart.png)
 
 ### User Interaction
 
 - **Registration and Login**: Users can register for a new account and log in to access personalized features.
+![Registration](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/Register.png)
+![Login](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/Login.png)
 - **Profile Management**: Users can view their profile, update personal information, and manage their account settings.
-- **Order Management**: Users can create orders from their shopping carts, view their order history, and delete orders if necessary.
-- **Category Management**: Admins have the ability to create, retrieve, and delete product categories to organize the inventory effectively.
+![Profile Management](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/UpdateProfile.png)
+- **Order Management**: Users can create orders from their shopping carts, view their order history, and connect admins to delete orders if necessary.
+![Order Management](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/OrderHistory.png)
+- **Category**: Ordinary users (Customers) can choose the products they want according to product categories and add them to the shopping cart
+![Category](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/Category.png)
 
 ### Additional Features
 
 - **Theme Switching**: Users can toggle between dark and light themes using the Context API.
+![Theme Switching](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/Toggle%20theme.png)
 - **Pagination**: Implements pagination to manage and display the product listings efficiently, enhancing load times and user experience.
 - **Responsive Design**: The site features a responsive layout, ensuring a seamless shopping experience on both desktops and mobile devices.
 
@@ -75,6 +85,16 @@ GroceryHub is designed to enhance the online shopping experience with advanced f
 - **Visitor**: Can browse products, use filters, log in, and create user accounts.
 - **Logged-in User**: Beyond visitor capabilities, they can add products to the shopping cart, proceed to checkout, and manage their orders and profiles.
 - **Admin**: Has all the privileges of logged-in users, with additional capabilities such as adding, deleting, and modifying products and categories.
+#### Admin Product
+![Admin Product](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/AdminProduct.png)
+#### Admin Manage
+![Admin Manage](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/AdminManage.png)
+#### Admin AddProduct
+![Admin AddProduct](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/AdminAddProduct.png)
+#### Admin Category Management
+![Admin Category Management](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/Category.png)
+#### Admin Order Management
+![Admin Order Management](https://github.com/Gugu9911/Online-Shopping-Mall---Frontend/blob/master/readmePic/AdminOrderManage.png)
 
 
 ## Getting Started
